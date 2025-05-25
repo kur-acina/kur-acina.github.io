@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Minecraft Offline Map</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #000;
+    }
+    canvas {
+      display: block;
+      image-rendering: pixelated;
+    }
+  </style>
+</head>
+<body>
+<canvas id="mapCanvas"></canvas>
+<script>
+const tileSize = 512;
+const canvas = document.getElementById("mapCanvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+ctx.imageSmoothingEnabled = false;
+
+let scale = 1;
+const MIN_SCALE = 0.05;
+const MAX_SCALE = 80;
+let offsetX = canvas.width / 2;
+let offsetY = canvas.height / 2;
+
+let isDragging = false;
+let lastX = 0;
+let lastY = 0;
+
+const tileCache = new Map();
+
+function drawMap() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const startX = Math.floor(-(offsetX / scale) / tileSize) - 1;
+  const endX = Math.ceil((canvas.width - offsetX) / (scale * tileSize)) + 1;
+  const startY = Math.floor(-(offsetY / scale) / tileSize) - 1;
+  const endY = Math.ceil((canvas.height - offsetY) / (scale * tileSize)) + 1;
+
+  for (let x = startX; x <= endX; x++) {
+    for (let y = startY; y <= endY; y++) {
+      const tileKey = `${x},${y}`;
+      const drawX = offsetX + x * tileSize * scale;
+      const drawY = offsetY + y * tileSize * scale;
+
+      if (tileCache.has(tileKey)) {
+        const cached = tileCache.get(tileKey);
+        if (cached instanceof Image) {
+          ctx.drawImage(cached, drawX, drawY, tileSize * scale, tileSize * scale);
+        } else if (cached === false) {
+          ctx.fillStyle = "#000";
+          ctx.fillRect(drawX, drawY, tileSize * scale, tileSize * scale);
+        }
+      } else {
+        const img = new Image();
+        img.src = `tiles/${tileKey}.png`;
+        img.onload = () => {
+          tileCache.set(tileKey, img);
+          drawMap();
+        };
+        img.onerror = () => {
+          tileCache.set(tileKey, false);
+          drawMap();
+        };
+        tileCache.set(tileKey, null);
+      }
+    }
+  }
+}
+
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  drawMap();
+});
+
+// Mouse support
+canvas.addEventListener("mousedown", (e) => {
+  isDragging = true;
+  lastX = e.clientX;
+  lastY = e.clientY;
+});
+canvas.addEventListener("mouseup", () => isDragging = false);
+canvas.addEventListener("mouseleave", () => isDragging = false);
+canvas.addEventListener("mousemove", (e) => {
+  if (isDragging) {
+    offsetX += e.clientX - lastX;
+    offsetY += e.clientY - lastY;
+    lastX = e.clientX;
+    lastY = e.clientY;
+    drawMap();
+  }
+});
+canvas.addEventListener("wheel", (e) => {
+  e.preventDefault();
+  const zoomFactor = 1.1;
+  const prevScale = scale;
+  scale *= (e.deltaY < 0) ? zoomFactor : 1 / zoomFactor;
+  scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale));
+
+  const mouseX = e.clientX;
+  const mouseY = e.clientY;
+  const worldX = (mouseX - offsetX) / prevScale;
+  const worldY = (mouseY - offsetY) / prevScale;
+
+  offsetX = mouseX - worldX * scale;
+  offsetY = mouseY - worldY * scale;
+
+  drawMap();
+}, { passive: false });
+
+// Touch support
+let touchStartDist = null;
+let lastTouchMid = null;
+
+canvas.addEventListener("touchstart", (e) => {
+  if (e.touches.length === 1) {
+    isDragging = true;
+    lastX = e.touches[0].clientX;
+    lastY = e.touches[0].clientY;
+  } else if (e.touches.length === 2) {
+    isDragging = false;
+    touchStartDist = getTouchDist(e.touches);
+    lastTouchMid = getTouchMidpoint(e.touches);
+  }
+}, { passive: false });
+
+canvas.addEventListener("touchmove", (e) => {
+  e.preventDefault();
+
+  if (e.touches.length === 1 && isDragging) {
+    const touch = e.touches[0];
+    offsetX += touch.clientX - lastX;
+    offsetY += touch.clientY - lastY;
+    lastX = touch.clientX;
+    lastY = touch.clientY;
+    drawMap();
+  } else if (e.touches.length === 2) {
+    const newDist = getTouchDist(e.touches);
+    const zoom = newDist / touchStartDist;
+    const prevScale = scale;
+    scale *= zoom;
+    scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale));
+    touchStartDist = newDist;
+
+    const newMid = getTouchMidpoint(e.touches);
+    const worldX = (newMid.x - offsetX) / prevScale;
+    const worldY = (newMid.y - offsetY) / prevScale;
+    offsetX = newMid.x - worldX * scale;
+    offsetY = newMid.y - worldY * scale;
+
+    drawMap();
+  }
+}, { passive: false });
+
+canvas.addEventListener("touchend", () => {
+  isDragging = false;
+  touchStartDist = null;
+}, { passive: false });
+
+function getTouchDist(touches) {
+  const dx = touches[0].clientX - touches[1].clientX;
+  const dy = touches[0].clientY - touches[1].clientY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+function getTouchMidpoint(touches) {
+  return {
+    x: (touches[0].clientX + touches[1].clientX) / 2,
+    y: (touches[0].clientY + touches[1].clientY) / 2,
+  };
+}
+
+drawMap();
+</script>
+
+</body>
+</html>
