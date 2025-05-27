@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>kuracina - minimap</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minecraft Map</title>
   <style>
     html, body {
       margin: 0;
@@ -14,10 +15,207 @@
       display: block;
       image-rendering: pixelated;
     }
+    #overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .tooltip {
+      position: absolute;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-family: sans-serif;
+      font-size: 14px;
+      pointer-events: none;
+      display: none;
+      z-index: 999;
+      user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+    }
+    #tag-controls-toggle {
+      position: absolute;
+      top: 15px; /* Match close button vertical position */
+      right: 20px;
+      z-index: 1100;
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      font-size: 28px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      transition: background 0.2s, opacity 0.2s;
+    }
+    #tag-controls {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      z-index: 1100;
+      background: rgba(20, 20, 20, 0.98);
+      color: white;
+      padding: 10px 14px 8px 14px; /* More compact */
+      border-radius: 16px;
+      font-family: sans-serif;
+      font-size: 15px;
+      max-width: 260px;
+      min-width: 170px;
+      min-height: 0px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.28);
+      user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      display: block;
+      transform-origin: top right;
+      scale: 0.3;
+      opacity: 0;
+      max-height: 0;
+      pointer-events: none;
+      transition: opacity 0.22s cubic-bezier(.4,0,.2,1), scale 0.32s cubic-bezier(.4,0,.2,1), max-height 0.35s cubic-bezier(.4,0,.2,1);
+      overflow: hidden;
+    }
+    #tag-controls.visible {
+      opacity: 1;
+      pointer-events: auto;
+      scale: 1;
+      max-height: 800px; /* Large enough for content */
+    }
+    #tag-controls input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      background-color: #2196f3;
+      border: 2px solid #2196f3;
+      border-radius: 7px;
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+      vertical-align: middle;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+      position: relative;
+      outline: none;
+      display: inline-block;
+    }
+    /* Metro A: blue */
+    #tag-controls input[type="checkbox"].metro-A:checked {
+      background-color: #2196f3 !important;
+      border-color: #2196f3 !important;
+    }
+    /* Metro B: blue */
+    #tag-controls input[type="checkbox"].metro-B:checked {
+      background-color: #2196f3 !important;
+      border-color: #2196f3 !important;
+    }
+    /* Metro test 1: blue */
+    #tag-controls input[type="checkbox"].metro-test1:checked {
+      background-color: #2196f3 !important;
+      border-color: #2196f3 !important;
+    }
+    /* Default metro: blue */
+    #tag-controls input[type="checkbox"].metro-default:checked {
+      background-color: #2196f3 !important;
+      border-color: #2196f3 !important;
+    }
+    #tag-controls input[type="checkbox"]:checked::after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 3.5px;
+      top: 0.5px;
+      width: 8px;
+      height: 12px;
+      border: solid #fff;
+      border-width: 0 3px 3px 0;
+      border-radius: 1.5px;
+      transform: rotate(45deg);
+      margin: 0 auto;
+    }
+    #tag-controls input[type="checkbox"]:hover {
+      box-shadow: 0 0 0 8px rgba(33,150,243,0.22);
+      border-color: #2196f3 !important;
+      filter: brightness(1.18);
+    }
+    #tag-controls label {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 4px;
+      margin-right: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      user-select: none;
+      border-radius: 8px;
+      padding: 2px 8px 2px 2px;
+      transition: background 0.15s;
+    }
+    #tag-controls label:hover {
+      background: none;
+      border-radius: 16px;
+      box-shadow: 0 0 0 8px rgba(33,150,243,0.12);
+    }
+    #tag-controls .section-title {
+      font-weight: bold;
+      margin-bottom: 2px;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      font-size: 15px;
+      letter-spacing: 0.5px;
+      padding: 2px 0;
+      border-radius: 6px;
+      transition: background 0.15s;
+    }
+    #tag-controls .section-title:hover {
+      background: none;
+      border-radius: 16px;
+      box-shadow: 0 0 0 8px rgba(33,150,243,0.12);
+    }
+    #tag-controls hr {
+      border: none;
+      border-top: 1px solid #444;
+      margin: 8px 0 6px 0;
+    }
+    #tag-controls-close {
+      position: absolute;
+      top: 13px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 1200;
+      line-height: 1;
+      transition: color 0.2s, background 0.2s, box-shadow 0.2s;
+      border-radius: 50%;
+      padding: 2px 6px 2px 6px;
+    }
+    #tag-controls-close:hover {
+      color: #2196f3;
+      background: none;
+      box-shadow: 0 0 0 12px rgba(33,150,243,0.18);
+    }
+    #tag-controls input[type="checkbox"]:not(:checked) {
+      background-color: #888 !important;
+      border-color: #888 !important;
+    }
   </style>
 </head>
 <body>
+<button id="tag-controls-toggle" title="Metros/Waypoints">🚇</button>
+<div id="tag-controls"></div>
+<div class="tooltip" id="tooltip"></div>
 <canvas id="mapCanvas"></canvas>
+<svg id="overlay"></svg>
 <script>
 const tileSize = 512;
 const canvas = document.getElementById("mapCanvas");
@@ -37,6 +235,15 @@ let lastX = 0;
 let lastY = 0;
 
 const tileCache = new Map();
+const svg = document.getElementById("overlay");
+const tooltip = document.getElementById("tooltip");
+let overlayData = null;
+let tagVisibility = {};
+let metroVisibility = {};
+let waypointVisibility = {};
+let allTags = new Set();
+let allMetros = new Set();
+let allWaypoints = new Set();
 
 function drawMap() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -74,6 +281,220 @@ function drawMap() {
       }
     }
   }
+  drawOverlay();
+}
+
+function worldToScreen(wx, wz) {
+  // posun o polovicu bloku doprava a dolu
+  return [
+    offsetX + (wx + 0.5) * scale,
+    offsetY + (wz + 0.5) * scale
+  ];
+}
+
+
+async function loadOverlayData() {
+  if (overlayData) return overlayData;
+  const res = await fetch("map_data.json");
+  overlayData = await res.json();
+  collectTags();
+  renderTagControls();
+  return overlayData;
+}
+
+function drawOverlay() {
+  if (!overlayData) return;
+  svg.innerHTML = "";
+  svg.setAttribute("width", canvas.width);
+  svg.setAttribute("height", canvas.height);
+
+  // Draw lines
+  if (overlayData.lines) {
+    overlayData.lines.forEach(line => {
+      // Metro/waypoint visibility check
+      let metros = [];
+      let waypoints = [];
+      if (typeof line.metro === 'string') metros.push(line.metro);
+      if (Array.isArray(line.metros)) metros = metros.concat(line.metros);
+      if (typeof line.waypoint === 'string') waypoints.push(line.waypoint);
+      if (Array.isArray(line.waypoints)) waypoints = waypoints.concat(line.waypoints);
+      let visible = true;
+      if (metros.length > 0) {
+        visible = false;
+        for (const tag of metros) if (metroVisibility[tag] !== false) visible = true;
+        if (!visible) return;
+      }
+      if (waypoints.length > 0) {
+        visible = false;
+        for (const tag of waypoints) if (waypointVisibility[tag] !== false) visible = true;
+        if (!visible) return;
+      }
+      if (metros.length === 0 && waypoints.length === 0 && (Object.keys(metroVisibility).length > 0 || Object.keys(waypointVisibility).length > 0)) return;
+      if (!line.points || line.points.length < 2) return;
+      let d = "M";
+      let lastX, lastY;
+      line.points.forEach((pt, i) => {
+        const [x, y] = worldToScreen(pt.x, pt.z);
+        if (i === 0) {
+          d += `${x},${y}`;
+        } else if (line.points.length === 2) {
+          d += ` L${x},${y}`;
+        } else {
+          d += ` Q ${(x + lastX)/2},${(y + lastY)/2} ${x},${y}`;
+        }
+        lastX = x; lastY = y;
+      });
+      const pathEl = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      pathEl.setAttribute("d", d);
+      pathEl.setAttribute("fill", "none");
+      pathEl.setAttribute("stroke", line.color || "orange");
+      pathEl.setAttribute("stroke-width", "3");
+      pathEl.setAttribute("pointer-events", "none");
+      svg.appendChild(pathEl);
+    });
+  }
+
+  // Draw points
+  if (overlayData.points) {
+    overlayData.points.forEach(m => {
+      // Metro/waypoint visibility check
+      let metros = [];
+      let waypoints = [];
+      if (typeof m.metro === 'string') metros.push(m.metro);
+      if (Array.isArray(m.metros)) metros = metros.concat(m.metros);
+      if (typeof m.waypoint === 'string') waypoints.push(m.waypoint);
+      if (Array.isArray(m.waypoints)) waypoints = waypoints.concat(m.waypoints);
+      let visible = true;
+      if (metros.length > 0) {
+        visible = false;
+        for (const tag of metros) if (metroVisibility[tag] !== false) visible = true;
+        if (!visible) return;
+      }
+      if (waypoints.length > 0) {
+        visible = false;
+        for (const tag of waypoints) if (waypointVisibility[tag] !== false) visible = true;
+        if (!visible) return;
+      }
+      if (metros.length === 0 && waypoints.length === 0 && (Object.keys(metroVisibility).length > 0 || Object.keys(waypointVisibility).length > 0)) return;
+      const [x, y] = worldToScreen(m.x, m.z);
+      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("cx", x);
+      circle.setAttribute("cy", y);
+      circle.setAttribute("r", 7); // Slightly bigger hitbox
+      circle.setAttribute("fill", m.color || "red");
+      circle.setAttribute("stroke", "#fff");
+      circle.setAttribute("stroke-width", "2");
+      circle.style.cursor = "pointer";
+      circle.setAttribute("pointer-events", "none");
+      svg.appendChild(circle);
+    });
+  }
+}
+
+function collectTags() {
+  allMetros.clear();
+  allWaypoints.clear();
+  if (!overlayData) return;
+  if (overlayData.lines) {
+    overlayData.lines.forEach(line => {
+      if (typeof line.metro === 'string') allMetros.add(line.metro);
+      if (Array.isArray(line.metros)) line.metros.forEach(tag => allMetros.add(tag));
+      if (typeof line.waypoint === 'string') allWaypoints.add(line.waypoint);
+      if (Array.isArray(line.waypoints)) line.waypoints.forEach(tag => allWaypoints.add(tag));
+    });
+  }
+  if (overlayData.points) {
+    overlayData.points.forEach(point => {
+      if (typeof point.metro === 'string') allMetros.add(point.metro);
+      if (Array.isArray(point.metros)) point.metros.forEach(tag => allMetros.add(tag));
+      if (typeof point.waypoint === 'string') allWaypoints.add(point.waypoint);
+      if (Array.isArray(point.waypoints)) point.waypoints.forEach(tag => allWaypoints.add(tag));
+    });
+  }
+}
+
+function renderTagControls() {
+  let html = '';
+  // Close button
+  html += `<button id='tag-controls-close' title='Close'>&times;</button>`;
+  // Metro colors and classes
+  const metroClasses = { A: 'metro-A', B: 'metro-B', 'test 1': 'metro-test1' };
+  const allMetrosArr = Array.from(allMetros);
+  // Ensure all metros are initialized as selected by default
+  allMetrosArr.forEach(tag => { if (!(tag in metroVisibility)) metroVisibility[tag] = true; });
+  const allMetrosChecked = allMetrosArr.length > 0 && allMetrosArr.every(tag => metroVisibility[tag]);
+  const allMetrosUnchecked = allMetrosArr.length > 0 && allMetrosArr.every(tag => !metroVisibility[tag]);
+  html += `<span class='section-title metro-section-title' style='margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:8px;'>
+    <input type='checkbox' id='toggle-metros' style='vertical-align:middle;margin-left:0;margin-right:8px;' ${allMetrosChecked ? 'checked' : ''}/>
+    Metros
+  </span>`;
+  // Render each metro tag as a colored checkbox (no inline style, use class only)
+  allMetrosArr.forEach(tag => {
+    const checked = metroVisibility[tag] ? 'checked' : '';
+    let className = metroClasses[tag] || 'metro-default';
+    html += `<label><input type='checkbox' class='${className}' data-type='metro' data-tag='${tag}' ${checked}/> ${tag}</label>`;
+  });
+  // Waypoints section with master checkbox
+  const allWaypointsArr = Array.from(allWaypoints);
+  allWaypointsArr.forEach(tag => { if (!(tag in waypointVisibility)) waypointVisibility[tag] = true; });
+  html += `<hr><span class='section-title waypoint-section-title' style='margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:8px;'>
+    <input type='checkbox' id='toggle-waypoints' style='vertical-align:middle;margin-left:0;margin-right:8px;'/>
+    Waypoints
+  </span>`;
+  allWaypointsArr.forEach(tag => {
+    const checked = waypointVisibility[tag] ? 'checked' : '';
+    html += `<label><input type='checkbox' class='waypoint' data-type='waypoint' data-tag='${tag}' ${checked}/> ${tag}</label>`;
+  });
+  tagControls.innerHTML = html;
+  // Listen for changes on tag checkboxes
+  tagControls.querySelectorAll('input[type=checkbox][data-type]').forEach(cb => {
+    cb.addEventListener('change', (e) => {
+      const tag = e.target.getAttribute('data-tag');
+      const type = e.target.getAttribute('data-type');
+      if (type === 'metro') metroVisibility[tag] = e.target.checked;
+      else if (type === 'waypoint') waypointVisibility[tag] = e.target.checked;
+      renderTagControls();
+      drawMap();
+    });
+  });
+  // Master checkbox for metros
+  const toggleMetros = document.getElementById('toggle-metros');
+  if (toggleMetros) {
+    toggleMetros.indeterminate = !allMetrosChecked && !allMetrosUnchecked;
+    toggleMetros.checked = allMetrosChecked;
+    toggleMetros.addEventListener('change', () => {
+      allMetros.forEach(tag => metroVisibility[tag] = toggleMetros.checked);
+      renderTagControls();
+      drawMap();
+    });
+  }
+  // Master checkbox for waypoints
+  const toggleWaypoints = document.getElementById('toggle-waypoints');
+  if (toggleWaypoints) {
+    const allWaypointsArr = Array.from(allWaypoints);
+    const allWaypointsChecked = allWaypointsArr.length > 0 && allWaypointsArr.every(tag => waypointVisibility[tag]);
+    const allWaypointsUnchecked = allWaypointsArr.length > 0 && allWaypointsArr.every(tag => !waypointVisibility[tag]);
+    toggleWaypoints.indeterminate = !allWaypointsChecked && !allWaypointsUnchecked;
+    toggleWaypoints.checked = allWaypointsChecked;
+    toggleWaypoints.addEventListener('change', () => {
+      allWaypoints.forEach(tag => waypointVisibility[tag] = toggleWaypoints.checked);
+      renderTagControls();
+      drawMap();
+    });
+  }
+  // Section title click = toggle all
+  tagControls.querySelector('.metro-section-title').addEventListener('click', (e) => {
+    if (e.target.tagName !== 'INPUT' && toggleMetros) toggleMetros.click();
+  });
+  tagControls.querySelector('.waypoint-section-title').addEventListener('click', (e) => {
+    if (e.target.tagName !== 'INPUT' && toggleWaypoints) toggleWaypoints.click();
+  });
+  // Close button
+  const closeBtn = document.getElementById('tag-controls-close');
+  if (closeBtn) closeBtn.addEventListener('click', () => {
+    tagControls.classList.remove('visible');
+    tagControlsToggle.classList.remove('hide');
+  });
 }
 
 window.addEventListener("resize", () => {
@@ -97,6 +518,105 @@ canvas.addEventListener("mousemove", (e) => {
     lastX = e.clientX;
     lastY = e.clientY;
     drawMap();
+  }
+  // Tooltip logic for points and lines
+  let found = false;
+  // Points
+  if (overlayData && overlayData.points) {
+    for (const m of overlayData.points) {
+      // Metro/waypoint visibility check
+      let metros = [];
+      let waypoints = [];
+      if (typeof m.metro === 'string') metros.push(m.metro);
+      if (Array.isArray(m.metros)) metros = metros.concat(m.metros);
+      if (typeof m.waypoint === 'string') waypoints.push(m.waypoint);
+      if (Array.isArray(m.waypoints)) waypoints = waypoints.concat(m.waypoints);
+      let visible = true;
+      if (metros.length > 0) {
+        visible = false;
+        for (const tag of metros) if (metroVisibility[tag] !== false) visible = true;
+        if (!visible) continue;
+      }
+      if (waypoints.length > 0) {
+        visible = false;
+        for (const tag of waypoints) if (waypointVisibility[tag] !== false) visible = true;
+        if (!visible) continue;
+      }
+      if (metros.length === 0 && waypoints.length === 0 && (Object.keys(metroVisibility).length > 0 || Object.keys(waypointVisibility).length > 0)) continue;
+      const [x, y] = worldToScreen(m.x, m.z);
+      const dx = e.clientX - x;
+      const dy = e.clientY - y;
+      if (Math.sqrt(dx*dx + dy*dy) < 10) {
+        tooltip.innerText = m.name;
+        tooltip.style.left = e.clientX + 10 + "px";
+        tooltip.style.top = e.clientY + 10 + "px";
+        tooltip.style.display = "block";
+        found = true;
+        break;
+      }
+    }
+  }
+  // Lines
+  if (!found && overlayData && overlayData.lines) {
+    for (const line of overlayData.lines) {
+      // Metro/waypoint visibility check
+      let metros = [];
+      let waypoints = [];
+      if (typeof line.metro === 'string') metros.push(line.metro);
+      if (Array.isArray(line.metros)) metros = metros.concat(line.metros);
+      if (typeof line.waypoint === 'string') waypoints.push(line.waypoint);
+      if (Array.isArray(line.waypoints)) waypoints = waypoints.concat(line.waypoints);
+      let visible = true;
+      if (metros.length > 0) {
+        visible = false;
+        for (const tag of metros) if (metroVisibility[tag] !== false) visible = true;
+        if (!visible) continue;
+      }
+      if (waypoints.length > 0) {
+        visible = false;
+        for (const tag of waypoints) if (waypointVisibility[tag] !== false) visible = true;
+        if (!visible) continue;
+      }
+      if (metros.length === 0 && waypoints.length === 0 && (Object.keys(metroVisibility).length > 0 || Object.keys(waypointVisibility).length > 0)) continue;
+      const pts = line.points;
+      if (!pts || pts.length < 2) continue;
+      for (let i = 1; i < pts.length; i++) {
+        const [x1, y1] = worldToScreen(pts[i-1].x, pts[i-1].z);
+        const [x2, y2] = worldToScreen(pts[i].x, pts[i].z);
+        // Distance from mouse to line segment
+        const px = e.clientX, py = e.clientY;
+        const dx = x2 - x1, dy = y2 - y1;
+        const lengthSq = dx*dx + dy*dy;
+        let t = ((px - x1) * dx + (py - y1) * dy) / (lengthSq || 1);
+        t = Math.max(0, Math.min(1, t));
+        const projX = x1 + t * dx;
+        const projY = y1 + t * dy;
+        const dist = Math.sqrt((px - projX) ** 2 + (py - projY) ** 2);
+        if (dist < 8) {
+          tooltip.innerText = line.name || (tags[0] || 'Line');
+          tooltip.style.left = e.clientX + 10 + "px";
+          tooltip.style.top = e.clientY + 10 + "px";
+          tooltip.style.display = "block";
+          found = true;
+          break;
+        }
+      }
+      if (found) break;
+    }
+  }
+  if (!found) tooltip.style.display = "none";
+});
+canvas.addEventListener("click", (e) => {
+  if (overlayData && overlayData.points) {
+    for (const m of overlayData.points) {
+      const [x, y] = worldToScreen(m.x, m.z);
+      const dx = e.clientX - x;
+      const dy = e.clientY - y;
+      if (Math.sqrt(dx*dx + dy*dy) < 10) {
+        // Removed alert on point click
+        break;
+      }
+    }
   }
 });
 canvas.addEventListener("wheel", (e) => {
@@ -179,7 +699,27 @@ function getTouchMidpoint(touches) {
   };
 }
 
-drawMap();
+// Initial load
+loadOverlayData().then(() => drawMap());
+
+// --- Tag controls toggle logic ---
+const tagControls = document.getElementById('tag-controls');
+const tagControlsToggle = document.getElementById('tag-controls-toggle');
+tagControlsToggle.addEventListener('click', () => {
+  tagControls.classList.toggle('visible');
+  if (tagControls.classList.contains('visible')) {
+    tagControlsToggle.classList.add('hide');
+  } else {
+    tagControlsToggle.classList.remove('hide');
+  }
+});
+// Hide panel if click outside
+window.addEventListener('mousedown', (e) => {
+  if (!tagControls.contains(e.target) && e.target !== tagControlsToggle) {
+    tagControls.classList.remove('visible');
+    tagControlsToggle.classList.remove('hide');
+  }
+});
 </script>
 
 </body>
