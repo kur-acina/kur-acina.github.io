@@ -1,0 +1,16 @@
+{
+  "points": [
+    { "id": "podmorsky_svet_c", "name": "Podmorský svet C", "cords": [23, 107], "color": "lime", "metro": "Metro C" },
+    { "id": "miskov_ostrov_a", "name": "Miškov ostrov A", "cords": [-206, 342], "color": "lime", "metro": "Metro C" },
+    { "id": "miskov_ostrov_b", "name": "Miškov ostrov B", "cords": [-206, 331], "color": "lime", "metro": "Metro C" },
+    { "id": "kuraci_svet", "name": "Kurací svet", "cords": [-32, 507], "color": "lime", "metro": "Metro C" }
+  ],
+    "lines": [
+    { "cords": [35, 107] },
+    { "cords": [5, 107] },
+    { "cords": [-206, 319] },
+    { "cords": [-206, 355] },
+    { "cords": [-54, 507] },
+    { "cords": [318, 507] }
+  ]
+}

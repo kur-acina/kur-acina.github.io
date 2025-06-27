@@ -1,0 +1,19 @@
+{
+  "metros": [
+    {
+      "id": "metro_a",
+      "name": "Metro A",
+      "color": "#ff000f"
+    },
+    {
+      "id": "metro_b",
+      "name": "Metro B",
+      "color": "#424242"
+    },
+    {
+      "id": "metro_c",
+      "name": "Metro C",
+      "color": "#03e300"
+    }
+  ]
+}

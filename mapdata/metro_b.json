@@ -1,0 +1,34 @@
+{
+  "points": [
+    { "id": "kuraci_dom_a", "name": "Kurací dom A", "cords": [151, -73], "color": "black", "metro": "Metro B" },
+    { "id": "krizovatka_a", "name": "KRIŽOVATKA A", "cords": [1, -73], "color": "black", "metro": "Metro B" },
+    { "id": "plaz_a", "name": "Pláž A", "cords": [-105, -102], "color": "black", "metro": "Metro B" },
+    { "id": "otocka_a", "name": "Otočka A", "cords": [-105, -179], "color": "black", "metro": "Metro B" },
+    { "id": "otocka_b", "name": "Otočka B", "cords": [-114, -179], "color": "black", "metro": "Metro B" },
+    { "id": "plaz_b", "name": "Pláž B", "cords": [-114, -102], "color": "black", "metro": "Metro B" },
+    { "id": "krizovatka_b", "name": "KRIŽOVATKA B", "cords": [1, -64], "color": "black", "metro": "Metro B" },
+    { "id": "kuraci_dom_b", "name": "Kurací dom B", "cords": [120, -64], "color": "black", "metro": "Metro B" }
+  ],
+  "lines": [
+    { "cords": [197, -64] },
+    { "cords": [210, -51] },
+    { "cords": [222, -51] },
+    { "cords": [229, -58] },
+    { "cords": [229, -66] },
+    { "cords": [222, -73] },
+    { "cords": [-93, -73] },
+    { "cords": [-105, -84] },
+    { "cords": [-105, -195] },
+    { "cords": [-98, -202] },
+    { "cords": [-98, -213] },
+    { "cords": [-103, -218] },
+    { "cords": [-116, -218] },
+    { "cords": [-121, -213] },
+    { "cords": [-121, -202] },
+    { "cords": [-114, -195] },
+    { "cords": [-114, -78] },
+    { "cords": [-100, -64] },
+    { "cords": [197,  -64] }
+  ]
+}
+

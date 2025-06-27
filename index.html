@@ -3,250 +3,335 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Minecraft Map</title>
+  <title>kura - Minecraft Map</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       overflow: hidden;
       background: #000;
+      height: 100%;
+      width: 100%;
     }
     canvas {
       display: block;
+      width: 100vw;
+      height: 100vh;
       image-rendering: pixelated;
+      touch-action: none;
+      background: #000;
     }
-    #overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
+    /* Tooltip style */
+    #metro-tooltip {
+      position: fixed;
       pointer-events: none;
-      z-index: 10;
-    }
-    .tooltip {
-      position: absolute;
-      background: rgba(0, 0, 0, 0.8);
-      color: white;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-family: sans-serif;
-      font-size: 14px;
-      pointer-events: none;
-      display: none;
-      z-index: 999;
-      user-select: none;
-      -webkit-user-select: none;
-      -ms-user-select: none;
-    }
-    #tag-controls-toggle {
-      position: absolute;
-      top: 15px; /* Match close button vertical position */
-      right: 20px;
-      z-index: 1100;
-      background: rgba(0,0,0,0.8);
+      background: rgba(30,30,30,0.97);
       color: #fff;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: sans-serif;
+      z-index: 1000;
+      box-shadow: 0 2px 12px rgba(106, 8, 8, 0.18);
+      display: none;
+    }
+    /* Modern Metro menu styles */
+    #metro-menu {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 2000;
+      background: rgba(30,30,30,0.98);
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+      font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+      display: none;
+      min-width: 160px;
+      transition: opacity 0.22s cubic-bezier(.4,1.6,.6,1),
+                  transform 0.32s cubic-bezier(.4,1.6,.6,1);
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.2);
+      transform-origin: top right;
+    }
+    #metro-menu.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+    #metro-menu.closing {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.2);
+      transition: opacity 0.22s cubic-bezier(.4,1.6,.6,1),
+                  transform 0.32s cubic-bezier(.4,1.6,.6,1);
+    }
+    #metro-menu-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    #metro-menu .menu-title {
+      font-size: 17.5px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #222;
+      cursor: pointer;
+      user-select: none;
+      text-shadow: none;
+      font-family: inherit;
+      transition: color 0.18s, background 0.18s, padding 0.18s, border-radius 0.18s, transform 0.18s, box-shadow 0.18s;
+    }
+    #metro-menu .menu-title:hover {
+      color: #2196f3;
+      background: rgba(33,150,243,0.10);
+      border-radius: 16px;
+      padding-left: 6px;
+      padding-right: 8px;
+      transform: translateX(2px) scale(1.04);
+      box-shadow: 0 2px 12px rgba(33,150,243,0.10);
+      transition: all 0.18s cubic-bezier(.4,1.6,.6,1);
+    }
+    #metro-menu .menu-title input[type="checkbox"] {
+      appearance: none;
+      outline: none;
+      border: 2.5px solid #2196f3;
+      background: #f7f8fa;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      margin-right: 14px;
+      margin-left: 0;
+      cursor: pointer;
+      transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      position: relative;
+      display: inline-block;
+      color: #2196f3;
+    }
+    #metro-menu .menu-title input[type="checkbox"]:checked {
+      background: #2196f3;
+      border-color: #2196f3;
+      box-shadow: 0 2px 8px rgba(33,150,243,0.10);
+    }
+    #metro-menu .menu-title input[type="checkbox"]:checked::after {
+      content: '\2714';
+      display: block;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 100%;
+      height: 100%;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: 'Consolas', 'Menlo', 'Monaco', 'Liberation Mono', 'Courier New', monospace;
+      line-height: 22px;
+      text-align: center;
+      transform: translate(-50%, -50%);
+      border-radius: 0;
+      box-shadow: none;
+      pointer-events: none;
+    }
+    #metro-menu .menu-title input[type="checkbox"]:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px #b3d4fc;
+    }
+    #metro-menu-list label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 15.5px;
+      letter-spacing: 0.2px;
+      text-shadow: none;
+      user-select: none;
+      padding-left: 18px;
+      color: inherit;
+      gap: 12px;
+      transition: color 0.18s, background 0.18s, padding 0.18s, border-radius 0.18s, transform 0.18s, box-shadow 0.18s;
+    }
+    #metro-menu-list label:hover {
+      background: rgba(var(--metro-rgb,33,150,243),0.10);
+      border-radius: 16px;
+      color: var(--metro-hover, currentColor);
+      padding-left: 18px;
+      padding-right: 4px;
+      transform: translateX(6px) scale(1.04);
+      box-shadow: 0 2px 12px rgba(var(--metro-rgb,33,150,243),0.10);
+      transition: all 0.18s cubic-bezier(.4,1.6,.6,1);
+    }
+    #metro-menu-list input[type="checkbox"] {
+      appearance: none;
+      outline: none;
+      border: 2px solid #d0d4db;
+      background: #f7f8fa;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      margin-right: 12px;
+      margin-left: 0;
+      cursor: pointer;
+      transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      position: relative;
+      display: inline-block;
+    }
+    #metro-menu-list input[type="checkbox"]:checked {
+      background: currentColor;
+      border-color: currentColor;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    }
+    #metro-menu-list input[type="checkbox"]:checked::after {
+      content: '\2714';
+      display: block;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 100%;
+      height: 100%;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: 'Consolas', 'Menlo', 'Monaco', 'Liberation Mono', 'Courier New', monospace;
+      line-height: 20px;
+      text-align: center;
+      transform: translate(-50%, -50%);
+      border-radius: 0;
+      box-shadow: none;
+      pointer-events: none;
+    }
+    #metro-menu-list input[type="checkbox"]:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px #b3d4fc;
+    }
+    #metro-menu-list .metro-name {
+      font-weight: 500;
+      font-size: 15.5px;
+      letter-spacing: 0.2px;
+      text-shadow: none;
+      color: currentColor !important;
+      font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+      opacity: 0.92;
+    }
+    #metro-menu-toggle {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 2100;
+      background: #222;
       border: none;
       border-radius: 50%;
       width: 44px;
       height: 44px;
-      font-size: 28px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      color: #fff;
+      font-size: 22px;
       cursor: pointer;
+      transition: background 0.2s, color 0.2s, box-shadow 0.22s cubic-bezier(.4,1.6,.6,1), filter 0.18s;
+      outline: none;
+    }
+    #metro-menu-toggle:hover {
+      background: #333;
+      filter: brightness(1.12);
+    }
+    #metro-menu-toggle.open:hover {
+      background: rgba(33,150,243,0.08);
+      color: #2196f3;
+      border-radius: 12px;
+    }
+    #metro-menu, #metro-menu * {
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+    #metro-menu-toggle span {
+      display: inline-block;
+      transition: transform 0.22s cubic-bezier(.4,1.6,.6,1);
+    }
+    #metro-menu-toggle.open span {
+      transform: rotate(90deg);
+    }
+    #metro-menu .close-btn {
+      color: #888;
+      font-size: 22px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      margin-left: auto;
+      transition: color 0.18s, background 0.18s;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-      transition: background 0.2s, opacity 0.2s;
     }
-    #tag-controls {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      z-index: 1100;
-      background: rgba(20, 20, 20, 0.98);
-      color: white;
-      padding: 10px 14px 8px 14px; /* More compact */
-      border-radius: 16px;
-      font-family: sans-serif;
-      font-size: 15px;
-      max-width: 260px;
-      min-width: 170px;
-      min-height: 0px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.28);
-      user-select: none;
-      -webkit-user-select: none;
-      -ms-user-select: none;
-      display: block;
-      transform-origin: top right;
-      scale: 0.3;
-      opacity: 0;
-      max-height: 0;
-      pointer-events: none;
-      transition: opacity 0.22s cubic-bezier(.4,0,.2,1), scale 0.32s cubic-bezier(.4,0,.2,1), max-height 0.35s cubic-bezier(.4,0,.2,1);
-      overflow: hidden;
-    }
-    #tag-controls.visible {
-      opacity: 1;
-      pointer-events: auto;
-      scale: 1;
-      max-height: 800px; /* Large enough for content */
-    }
-    #tag-controls input[type="checkbox"] {
-      appearance: none;
-      -webkit-appearance: none;
-      background-color: #2196f3;
-      border: 2px solid #2196f3;
-      border-radius: 7px;
-      width: 20px;
-      height: 20px;
-      margin-right: 8px;
-      vertical-align: middle;
-      cursor: pointer;
-      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.10);
-      position: relative;
-      outline: none;
-      display: inline-block;
-    }
-    /* Metro A: blue */
-    #tag-controls input[type="checkbox"].metro-A:checked {
-      background-color: #2196f3 !important;
-      border-color: #2196f3 !important;
-    }
-    /* Metro B: blue */
-    #tag-controls input[type="checkbox"].metro-B:checked {
-      background-color: #2196f3 !important;
-      border-color: #2196f3 !important;
-    }
-    /* Metro test 1: blue */
-    #tag-controls input[type="checkbox"].metro-test1:checked {
-      background-color: #2196f3 !important;
-      border-color: #2196f3 !important;
-    }
-    /* Default metro: blue */
-    #tag-controls input[type="checkbox"].metro-default:checked {
-      background-color: #2196f3 !important;
-      border-color: #2196f3 !important;
-    }
-    #tag-controls input[type="checkbox"]:checked::after {
-      content: '';
-      display: block;
-      position: absolute;
-      left: 3.5px;
-      top: 0.5px;
-      width: 8px;
-      height: 12px;
-      border: solid #fff;
-      border-width: 0 3px 3px 0;
-      border-radius: 1.5px;
-      transform: rotate(45deg);
-      margin: 0 auto;
-    }
-    #tag-controls input[type="checkbox"]:hover {
-      box-shadow: 0 0 0 8px rgba(33,150,243,0.22);
-      border-color: #2196f3 !important;
-      filter: brightness(1.18);
-    }
-    #tag-controls label {
-      display: inline-flex;
-      align-items: center;
-      margin-bottom: 4px;
-      margin-right: 10px;
-      cursor: pointer;
-      font-size: 14px;
-      user-select: none;
-      border-radius: 8px;
-      padding: 2px 8px 2px 2px;
-      transition: background 0.15s;
-    }
-    #tag-controls label:hover {
-      background: none;
-      border-radius: 16px;
-      box-shadow: 0 0 0 8px rgba(33,150,243,0.12);
-    }
-    #tag-controls .section-title {
-      font-weight: bold;
-      margin-bottom: 2px;
-      margin-top: 2px;
-      display: flex;
-      align-items: center;
-      font-size: 15px;
-      letter-spacing: 0.5px;
-      padding: 2px 0;
-      border-radius: 6px;
-      transition: background 0.15s;
-    }
-    #tag-controls .section-title:hover {
-      background: none;
-      border-radius: 16px;
-      box-shadow: 0 0 0 8px rgba(33,150,243,0.12);
-    }
-    #tag-controls hr {
-      border: none;
-      border-top: 1px solid #444;
-      margin: 8px 0 6px 0;
-    }
-    #tag-controls-close {
-      position: absolute;
-      top: 13px;
-      right: 10px;
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 24px;
-      cursor: pointer;
-      z-index: 1200;
-      line-height: 1;
-      transition: color 0.2s, background 0.2s, box-shadow 0.2s;
-      border-radius: 50%;
-      padding: 2px 6px 2px 6px;
-    }
-    #tag-controls-close:hover {
-      color: #2196f3;
-      background: none;
-      box-shadow: 0 0 0 12px rgba(33,150,243,0.18);
-    }
-    #tag-controls input[type="checkbox"]:not(:checked) {
-      background-color: #888 !important;
-      border-color: #888 !important;
+    #metro-menu .close-btn:hover {
+      color: #e53935;
+      background: rgba(229,57,53,0.08);
     }
   </style>
 </head>
 <body>
-<button id="tag-controls-toggle" title="Metros/Waypoints">🚇</button>
-<div id="tag-controls"></div>
-<div class="tooltip" id="tooltip"></div>
 <canvas id="mapCanvas"></canvas>
-<svg id="overlay"></svg>
+<div id="metro-tooltip"></div>
+<!-- Metro menu -->
+<div id="metro-menu">
+  <div class="menu-title">
+    <span>Metros</span>
+    <!-- Main toggle checkbox for all metros -->
+    <input type="checkbox" id="toggle-all-metros" title="Toggle All Metros">
+  </div>
+  <div id="metro-menu-list"></div>
+</div>
+<!-- Menu toggle button -->
+<button id="metro-menu-toggle"><span>🚇</span></button>
 <script>
+// --- DRAW MAP ---
 const tileSize = 512;
 const canvas = document.getElementById("mapCanvas");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+const ctx = canvas.getContext("2d", { willReadFrequently: false });
 ctx.imageSmoothingEnabled = false;
 
-let scale = 1;
-const MIN_SCALE = 0.05;
-const MAX_SCALE = 80;
-let offsetX = canvas.width / 2;
-let offsetY = canvas.height / 2;
-
-let isDragging = false;
-let lastX = 0;
-let lastY = 0;
-
+let scale = 1, targetScale = 1;
+let offsetX = 0, offsetY = 0;
+let targetOffsetX = 0, targetOffsetY = 0;
+let isDragging = false, lastX = 0, lastY = 0;
 const tileCache = new Map();
-const svg = document.getElementById("overlay");
-const tooltip = document.getElementById("tooltip");
-let overlayData = null;
-let tagVisibility = {};
-let metroVisibility = {};
-let waypointVisibility = {};
-let allTags = new Set();
-let allMetros = new Set();
-let allWaypoints = new Set();
+let metros = [];
+let visibleMetros = new Set(); // Track visible metros by id
+
+function centerMap() {
+  offsetX = targetOffsetX = window.innerWidth / 2;
+  offsetY = targetOffsetY = window.innerHeight / 2;
+}
+
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
+  canvas.style.width = window.innerWidth + "px";
+  canvas.style.height = window.innerHeight + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  drawMap();
+}
+
+window.addEventListener("resize", resize);
+centerMap();
+resize();
 
 function drawMap() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.imageSmoothingEnabled = false;
+
   const startX = Math.floor(-(offsetX / scale) / tileSize) - 1;
   const endX = Math.ceil((canvas.width - offsetX) / (scale * tileSize)) + 1;
   const startY = Math.floor(-(offsetY / scale) / tileSize) - 1;
@@ -257,332 +342,492 @@ function drawMap() {
       const tileKey = `${x},${y}`;
       const drawX = offsetX + x * tileSize * scale;
       const drawY = offsetY + y * tileSize * scale;
-
       if (tileCache.has(tileKey)) {
-        const cached = tileCache.get(tileKey);
-        if (cached instanceof Image) {
-          ctx.drawImage(cached, drawX, drawY, tileSize * scale, tileSize * scale);
-        } else if (cached === false) {
-          ctx.fillStyle = "#000";
-          ctx.fillRect(drawX, drawY, tileSize * scale, tileSize * scale);
+        const img = tileCache.get(tileKey);
+        if (img instanceof Image) {
+          // Draw a 0.5px overlap to hide seams more subtly
+          ctx.drawImage(img, drawX - 0.5, drawY - 0.5, tileSize * scale + 1, tileSize * scale + 1);
         }
       } else {
         const img = new Image();
         img.src = `tiles/${tileKey}.png`;
-        img.onload = () => {
-          tileCache.set(tileKey, img);
-          drawMap();
-        };
-        img.onerror = () => {
-          tileCache.set(tileKey, false);
-          drawMap();
-        };
+        img.onload = () => { tileCache.set(tileKey, img); drawMap(); };
+        img.onerror = () => { tileCache.set(tileKey, false); };
         tileCache.set(tileKey, null);
       }
     }
   }
-  drawOverlay();
+
+  renderMetros();
 }
 
-function worldToScreen(wx, wz) {
-  // posun o polovicu bloku doprava a dolu
-  return [
-    offsetX + (wx + 0.5) * scale,
-    offsetY + (wz + 0.5) * scale
-  ];
-}
-
-
-async function loadOverlayData() {
-  if (overlayData) return overlayData;
-  const res = await fetch("map_data.json");
-  overlayData = await res.json();
-  collectTags();
-  renderTagControls();
-  return overlayData;
-}
-
-function drawOverlay() {
-  if (!overlayData) return;
-  svg.innerHTML = "";
-  svg.setAttribute("width", canvas.width);
-  svg.setAttribute("height", canvas.height);
-
-  // Draw lines
-  if (overlayData.lines) {
-    overlayData.lines.forEach(line => {
-      // Metro/waypoint visibility check
-      let metros = [];
-      let waypoints = [];
-      if (typeof line.metro === 'string') metros.push(line.metro);
-      if (Array.isArray(line.metros)) metros = metros.concat(line.metros);
-      if (typeof line.waypoint === 'string') waypoints.push(line.waypoint);
-      if (Array.isArray(line.waypoints)) waypoints = waypoints.concat(line.waypoints);
-      let visible = true;
-      if (metros.length > 0) {
-        visible = false;
-        for (const tag of metros) if (metroVisibility[tag] !== false) visible = true;
-        if (!visible) return;
-      }
-      if (waypoints.length > 0) {
-        visible = false;
-        for (const tag of waypoints) if (waypointVisibility[tag] !== false) visible = true;
-        if (!visible) return;
-      }
-      if (metros.length === 0 && waypoints.length === 0 && (Object.keys(metroVisibility).length > 0 || Object.keys(waypointVisibility).length > 0)) return;
-      if (!line.points || line.points.length < 2) return;
-      let d = "M";
-      let lastX, lastY;
-      line.points.forEach((pt, i) => {
-        const [x, y] = worldToScreen(pt.x, pt.z);
-        if (i === 0) {
-          d += `${x},${y}`;
-        } else if (line.points.length === 2) {
-          d += ` L${x},${y}`;
-        } else {
-          d += ` Q ${(x + lastX)/2},${(y + lastY)/2} ${x},${y}`;
-        }
-        lastX = x; lastY = y;
+async function loadMetros() {
+  try {
+    // Load metros
+    const metrosRes = await fetch("mapdata/metros.json");
+    const metrosData = await metrosRes.json();
+    for (const metro of metrosData.metros) {
+      const metroRes = await fetch(`mapdata/${metro.id}.json`);
+      const metroData = await metroRes.json();
+      metros.push({
+        id: metro.id,
+        name: metro.name,
+        color: metro.color,
+        data: metroData,
+        type: 'metro'
       });
-      const pathEl = document.createElementNS("http://www.w3.org/2000/svg", "path");
-      pathEl.setAttribute("d", d);
-      pathEl.setAttribute("fill", "none");
-      pathEl.setAttribute("stroke", line.color || "orange");
-      pathEl.setAttribute("stroke-width", "3");
-      pathEl.setAttribute("pointer-events", "none");
-      svg.appendChild(pathEl);
-    });
-  }
-
-  // Draw points
-  if (overlayData.points) {
-    overlayData.points.forEach(m => {
-      // Metro/waypoint visibility check
-      let metros = [];
-      let waypoints = [];
-      if (typeof m.metro === 'string') metros.push(m.metro);
-      if (Array.isArray(m.metros)) metros = metros.concat(m.metros);
-      if (typeof m.waypoint === 'string') waypoints.push(m.waypoint);
-      if (Array.isArray(m.waypoints)) waypoints = waypoints.concat(m.waypoints);
-      let visible = true;
-      if (metros.length > 0) {
-        visible = false;
-        for (const tag of metros) if (metroVisibility[tag] !== false) visible = true;
-        if (!visible) return;
+      visibleMetros.add(metro.id);
+    }
+    // Load trains
+    try {
+      const trainsRes = await fetch("mapdata/trains.json");
+      if (trainsRes.ok) {
+        const trainsData = await trainsRes.json();
+        for (const train of trainsData.metros) {
+          const trainRes = await fetch(`mapdata/${train.id}.json`);
+          const trainData = await trainRes.json();
+          metros.push({
+            id: train.id,
+            name: train.name,
+            color: train.color,
+            data: trainData,
+            type: 'train'
+          });
+          visibleMetros.add(train.id);
+        }
       }
-      if (waypoints.length > 0) {
-        visible = false;
-        for (const tag of waypoints) if (waypointVisibility[tag] !== false) visible = true;
-        if (!visible) return;
-      }
-      if (metros.length === 0 && waypoints.length === 0 && (Object.keys(metroVisibility).length > 0 || Object.keys(waypointVisibility).length > 0)) return;
-      const [x, y] = worldToScreen(m.x, m.z);
-      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      circle.setAttribute("cx", x);
-      circle.setAttribute("cy", y);
-      circle.setAttribute("r", 7); // Slightly bigger hitbox
-      circle.setAttribute("fill", m.color || "red");
-      circle.setAttribute("stroke", "#fff");
-      circle.setAttribute("stroke-width", "2");
-      circle.style.cursor = "pointer";
-      circle.setAttribute("pointer-events", "none");
-      svg.appendChild(circle);
-    });
-  }
-}
-
-function collectTags() {
-  allMetros.clear();
-  allWaypoints.clear();
-  if (!overlayData) return;
-  if (overlayData.lines) {
-    overlayData.lines.forEach(line => {
-      if (typeof line.metro === 'string') allMetros.add(line.metro);
-      if (Array.isArray(line.metros)) line.metros.forEach(tag => allMetros.add(tag));
-      if (typeof line.waypoint === 'string') allWaypoints.add(line.waypoint);
-      if (Array.isArray(line.waypoints)) line.waypoints.forEach(tag => allWaypoints.add(tag));
-    });
-  }
-  if (overlayData.points) {
-    overlayData.points.forEach(point => {
-      if (typeof point.metro === 'string') allMetros.add(point.metro);
-      if (Array.isArray(point.metros)) point.metros.forEach(tag => allMetros.add(tag));
-      if (typeof point.waypoint === 'string') allWaypoints.add(point.waypoint);
-      if (Array.isArray(point.waypoints)) point.waypoints.forEach(tag => allWaypoints.add(tag));
-    });
-  }
-}
-
-function renderTagControls() {
-  let html = '';
-  // Close button
-  html += `<button id='tag-controls-close' title='Close'>&times;</button>`;
-  // Metro colors and classes
-  const metroClasses = { A: 'metro-A', B: 'metro-B', 'test 1': 'metro-test1' };
-  const allMetrosArr = Array.from(allMetros);
-  // Ensure all metros are initialized as selected by default
-  allMetrosArr.forEach(tag => { if (!(tag in metroVisibility)) metroVisibility[tag] = true; });
-  const allMetrosChecked = allMetrosArr.length > 0 && allMetrosArr.every(tag => metroVisibility[tag]);
-  const allMetrosUnchecked = allMetrosArr.length > 0 && allMetrosArr.every(tag => !metroVisibility[tag]);
-  html += `<span class='section-title metro-section-title' style='margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:8px;'>
-    <input type='checkbox' id='toggle-metros' style='vertical-align:middle;margin-left:0;margin-right:8px;' ${allMetrosChecked ? 'checked' : ''}/>
-    Metros
-  </span>`;
-  // Render each metro tag as a colored checkbox (no inline style, use class only)
-  allMetrosArr.forEach(tag => {
-    const checked = metroVisibility[tag] ? 'checked' : '';
-    let className = metroClasses[tag] || 'metro-default';
-    html += `<label><input type='checkbox' class='${className}' data-type='metro' data-tag='${tag}' ${checked}/> ${tag}</label>`;
-  });
-  // Waypoints section with master checkbox
-  const allWaypointsArr = Array.from(allWaypoints);
-  allWaypointsArr.forEach(tag => { if (!(tag in waypointVisibility)) waypointVisibility[tag] = true; });
-  html += `<hr><span class='section-title waypoint-section-title' style='margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:8px;'>
-    <input type='checkbox' id='toggle-waypoints' style='vertical-align:middle;margin-left:0;margin-right:8px;'/>
-    Waypoints
-  </span>`;
-  allWaypointsArr.forEach(tag => {
-    const checked = waypointVisibility[tag] ? 'checked' : '';
-    html += `<label><input type='checkbox' class='waypoint' data-type='waypoint' data-tag='${tag}' ${checked}/> ${tag}</label>`;
-  });
-  tagControls.innerHTML = html;
-  // Listen for changes on tag checkboxes
-  tagControls.querySelectorAll('input[type=checkbox][data-type]').forEach(cb => {
-    cb.addEventListener('change', (e) => {
-      const tag = e.target.getAttribute('data-tag');
-      const type = e.target.getAttribute('data-type');
-      if (type === 'metro') metroVisibility[tag] = e.target.checked;
-      else if (type === 'waypoint') waypointVisibility[tag] = e.target.checked;
-      renderTagControls();
-      drawMap();
-    });
-  });
-  // Master checkbox for metros
-  const toggleMetros = document.getElementById('toggle-metros');
-  if (toggleMetros) {
-    toggleMetros.indeterminate = !allMetrosChecked && !allMetrosUnchecked;
-    toggleMetros.checked = allMetrosChecked;
-    toggleMetros.addEventListener('change', () => {
-      allMetros.forEach(tag => metroVisibility[tag] = toggleMetros.checked);
-      renderTagControls();
-      drawMap();
-    });
-  }
-  // Master checkbox for waypoints
-  const toggleWaypoints = document.getElementById('toggle-waypoints');
-  if (toggleWaypoints) {
-    const allWaypointsArr = Array.from(allWaypoints);
-    const allWaypointsChecked = allWaypointsArr.length > 0 && allWaypointsArr.every(tag => waypointVisibility[tag]);
-    const allWaypointsUnchecked = allWaypointsArr.length > 0 && allWaypointsArr.every(tag => !waypointVisibility[tag]);
-    toggleWaypoints.indeterminate = !allWaypointsChecked && !allWaypointsUnchecked;
-    toggleWaypoints.checked = allWaypointsChecked;
-    toggleWaypoints.addEventListener('change', () => {
-      allWaypoints.forEach(tag => waypointVisibility[tag] = toggleWaypoints.checked);
-      renderTagControls();
-      drawMap();
-    });
-  }
-  // Section title click = toggle all
-  tagControls.querySelector('.metro-section-title').addEventListener('click', (e) => {
-    if (e.target.tagName !== 'INPUT' && toggleMetros) toggleMetros.click();
-  });
-  tagControls.querySelector('.waypoint-section-title').addEventListener('click', (e) => {
-    if (e.target.tagName !== 'INPUT' && toggleWaypoints) toggleWaypoints.click();
-  });
-  // Close button
-  const closeBtn = document.getElementById('tag-controls-close');
-  if (closeBtn) closeBtn.addEventListener('click', () => {
-    tagControls.classList.remove('visible');
-    tagControlsToggle.classList.remove('hide');
-  });
-}
-
-window.addEventListener("resize", () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  drawMap();
-});
-
-// Mouse support
-canvas.addEventListener("mousedown", (e) => {
-  isDragging = true;
-  lastX = e.clientX;
-  lastY = e.clientY;
-});
-canvas.addEventListener("mouseup", () => isDragging = false);
-canvas.addEventListener("mouseleave", () => isDragging = false);
-canvas.addEventListener("mousemove", (e) => {
-  if (isDragging) {
-    offsetX += e.clientX - lastX;
-    offsetY += e.clientY - lastY;
-    lastX = e.clientX;
-    lastY = e.clientY;
+    } catch (e) {
+      // trains.json not present or failed, ignore
+    }
+    createMetroMenu();
     drawMap();
+  } catch (e) {
+    console.error("Couldn't load metro or train:", e);
   }
-  // Tooltip logic for points and lines
+}
+loadMetros();
+
+function createMetroMenu() {
+  const menu = document.getElementById('metro-menu');
+  const list = document.getElementById('metro-menu-list');
+  list.innerHTML = '';
+  // Separate metros and trains
+  const uniqueMetros = Array.from(new Map(metros.filter(m => m.type !== 'train').map(m => [m.id, m])).values());
+  const uniqueTrains = Array.from(new Map(metros.filter(m => m.type === 'train').map(m => [m.id, m])).values());
+
+  // --- METROS SECTION ---
+  // Main toggle checkbox for metros
+  let allChecked = uniqueMetros.every(metro => visibleMetros.has(metro.id));
+  let someChecked = uniqueMetros.some(metro => visibleMetros.has(metro.id));
+  let mainCheckbox = document.createElement('input');
+  mainCheckbox.type = 'checkbox';
+  mainCheckbox.checked = allChecked;
+  mainCheckbox.indeterminate = !allChecked && someChecked;
+  mainCheckbox.id = 'toggle-all-metros-real';
+  mainCheckbox.style.cursor = 'pointer';
+  mainCheckbox.style.accentColor = '#2196f3';
+  mainCheckbox.style.width = '22px';
+  mainCheckbox.style.height = '22px';
+  mainCheckbox.style.marginRight = '12px';
+  mainCheckbox.style.marginLeft = '0';
+  mainCheckbox.addEventListener('change', () => {
+    if (mainCheckbox.checked) {
+      uniqueMetros.forEach(metro => visibleMetros.add(metro.id));
+    } else {
+      uniqueMetros.forEach(metro => visibleMetros.delete(metro.id));
+    }
+    createMetroMenu();
+    drawMap();
+  });
+  // Title with checkbox (checkbox on left)
+  const titleDiv = document.createElement('div');
+  titleDiv.className = 'menu-title';
+  titleDiv.style.color = '#fff';
+  titleDiv.style.cursor = 'pointer';
+  titleDiv.style.display = 'flex';
+  titleDiv.style.alignItems = 'center';
+  titleDiv.style.gap = '10px';
+  // Clicking the title toggles the checkbox
+  titleDiv.addEventListener('click', (e) => {
+    if (e.target !== mainCheckbox) {
+      mainCheckbox.checked = !mainCheckbox.checked;
+      mainCheckbox.dispatchEvent(new Event('change'));
+    }
+  });
+  const titleText = document.createElement('span');
+  titleText.textContent = 'Metros';
+  titleText.style.fontWeight = 'bold';
+  titleText.style.fontSize = '17px';
+  titleText.style.letterSpacing = '1px';
+  titleText.style.textShadow = 'none';
+  titleDiv.appendChild(mainCheckbox);
+  titleDiv.appendChild(titleText);
+  menu.replaceChild(titleDiv, menu.firstElementChild);
+  // List metros
+  uniqueMetros.forEach(metro => {
+    const label = document.createElement('label');
+    label.className = 'metro-label';
+    label.style.color = metro.color;
+    label.style.setProperty('--metro-hover', metro.color);
+    function hexToRgbArr(hex) {
+      hex = hex.replace('#', '');
+      if (hex.length === 3) hex = hex.split('').map(x => x + x).join('');
+      const num = parseInt(hex, 16);
+      return [(num >> 16) & 255, (num >> 8) & 255, num & 255];
+    }
+    const rgbArr = hexToRgbArr(metro.color);
+    label.style.setProperty('--metro-rgb', rgbArr.join(','));
+    label.style.display = 'flex';
+    label.style.alignItems = 'center';
+    label.style.gap = '10px';
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = visibleMetros.has(metro.id);
+    checkbox.style.color = metro.color;
+    checkbox.style.width = '20px';
+    checkbox.style.height = '20px';
+    checkbox.style.marginRight = '10px';
+    checkbox.style.marginLeft = '0';
+    checkbox.addEventListener('change', () => {
+      if (checkbox.checked) visibleMetros.add(metro.id);
+      else visibleMetros.delete(metro.id);
+      createMetroMenu();
+      drawMap();
+    });
+    const name = document.createElement('span');
+    name.className = 'metro-name';
+    name.textContent = metro.name;
+    label.appendChild(checkbox);
+    label.appendChild(name);
+    list.appendChild(label);
+  });
+
+  // --- TRAINS SECTION ---
+  if (uniqueTrains.length > 0) {
+    // Spacer
+    const spacer = document.createElement('div');
+    spacer.style.height = '18px';
+    list.appendChild(spacer);
+    // Trains title and toggle
+    let allTrainsChecked = uniqueTrains.every(train => visibleMetros.has(train.id));
+    let someTrainsChecked = uniqueTrains.some(train => visibleMetros.has(train.id));
+    let trainsCheckbox = document.createElement('input');
+    trainsCheckbox.type = 'checkbox';
+    trainsCheckbox.checked = allTrainsChecked;
+    trainsCheckbox.indeterminate = !allTrainsChecked && someTrainsChecked;
+    trainsCheckbox.id = 'toggle-all-trains-real';
+    trainsCheckbox.style.cursor = 'pointer';
+    trainsCheckbox.style.accentColor = '#2196f3';
+    trainsCheckbox.style.width = '22px';
+    trainsCheckbox.style.height = '22px';
+    trainsCheckbox.style.marginRight = '12px';
+    trainsCheckbox.style.marginLeft = '0';
+    trainsCheckbox.addEventListener('change', () => {
+      if (trainsCheckbox.checked) {
+        uniqueTrains.forEach(train => visibleMetros.add(train.id));
+      } else {
+        uniqueTrains.forEach(train => visibleMetros.delete(train.id));
+      }
+      createMetroMenu();
+      drawMap();
+    });
+    const trainsTitleDiv = document.createElement('div');
+    trainsTitleDiv.className = 'menu-title';
+    trainsTitleDiv.style.color = '#fff';
+    trainsTitleDiv.style.cursor = 'pointer';
+    trainsTitleDiv.style.display = 'flex';
+    trainsTitleDiv.style.alignItems = 'center';
+    trainsTitleDiv.style.gap = '10px';
+    trainsTitleDiv.addEventListener('click', (e) => {
+      if (e.target !== trainsCheckbox) {
+        trainsCheckbox.checked = !trainsCheckbox.checked;
+        trainsCheckbox.dispatchEvent(new Event('change'));
+      }
+    });
+    const trainsTitleText = document.createElement('span');
+    trainsTitleText.textContent = 'Trains';
+    trainsTitleText.style.fontWeight = 'bold';
+    trainsTitleText.style.fontSize = '17px';
+    trainsTitleText.style.letterSpacing = '1px';
+    trainsTitleText.style.textShadow = 'none';
+    trainsTitleDiv.appendChild(trainsCheckbox);
+    trainsTitleDiv.appendChild(trainsTitleText);
+    list.appendChild(trainsTitleDiv);
+    // List trains
+    uniqueTrains.forEach(train => {
+      const label = document.createElement('label');
+      label.className = 'metro-label';
+      label.style.color = train.color;
+      label.style.setProperty('--metro-hover', train.color);
+      function hexToRgbArr(hex) {
+        hex = hex.replace('#', '');
+        if (hex.length === 3) hex = hex.split('').map(x => x + x).join('');
+        const num = parseInt(hex, 16);
+        return [(num >> 16) & 255, (num >> 8) & 255, num & 255];
+      }
+      const rgbArr = hexToRgbArr(train.color);
+      label.style.setProperty('--metro-rgb', rgbArr.join(','));
+      label.style.display = 'flex';
+      label.style.alignItems = 'center';
+      label.style.gap = '10px';
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = visibleMetros.has(train.id);
+      checkbox.style.color = train.color;
+      checkbox.style.width = '20px';
+      checkbox.style.height = '20px';
+      checkbox.style.marginRight = '10px';
+      checkbox.style.marginLeft = '0';
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) visibleMetros.add(train.id);
+        else visibleMetros.delete(train.id);
+        createMetroMenu();
+        drawMap();
+      });
+      const name = document.createElement('span');
+      name.className = 'metro-name';
+      name.textContent = train.name;
+      label.appendChild(checkbox);
+      label.appendChild(name);
+      list.appendChild(label);
+    });
+  }
+}
+// Toggle menu with animation
+const menu = document.getElementById('metro-menu');
+const menuBtn = document.getElementById('metro-menu-toggle');
+const menuIcon = menuBtn.querySelector('span');
+
+function openMenu() {
+  menu.classList.remove('closing');
+  menu.style.display = 'block';
+  setTimeout(() => {
+    menu.classList.add('open');
+    menuBtn.classList.add('open');
+    menuIcon.textContent = '✖';
+  }, 10);
+}
+
+function closeMenu() {
+  menu.classList.remove('open');
+  menu.classList.add('closing');
+  menuBtn.classList.remove('open');
+  menuIcon.textContent = '🚇';
+  // Wait for transition to end before hiding
+  function onTransitionEnd(e) {
+    if (e.propertyName === 'transform') {
+      menu.style.display = 'none';
+      menu.classList.remove('closing');
+      menu.removeEventListener('transitionend', onTransitionEnd);
+    }
+  }
+  menu.addEventListener('transitionend', onTransitionEnd);
+}
+
+function isMenuOpen() {
+  return menu.classList.contains('open');
+}
+
+menuBtn.addEventListener('click', () => {
+  if (isMenuOpen()) {
+    closeMenu();
+  } else {
+    openMenu();
+  }
+});
+
+// Only close if menu is open and click is outside (ignore menuBtn and its children)
+window.addEventListener('mousedown', e => {
+  if (isMenuOpen() && !menu.contains(e.target) && !menuBtn.contains(e.target)) {
+    closeMenu();
+  }
+});
+
+function renderMetros() {
+  // Track hovered station
+  let hoveredStation = null;
+  if (window._metroHover) hoveredStation = window._metroHover;
+
+  for (const metro of metros) {
+    if (!visibleMetros.has(metro.id)) continue; // Only render if visible
+    // Draw shadow for lines, with hover effect only if line is hovered
+    let lineHovered = false;
+    if (window._metroLineHover && metro.id === window._metroLineHover.metroId) lineHovered = true;
+    ctx.save();
+    ctx.shadowColor = lineHovered ? metro.color : 'rgba(0,0,0,0.18)';
+    ctx.shadowBlur = lineHovered ? 10 : 6; // Reduced from 18 to 10 for smaller glow
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+    ctx.strokeStyle = metro.color;
+    ctx.lineWidth = lineHovered ? 5.5 : 4; // Thinner on hover
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+
+    const points = metro.data.lines.map(line => line.cords || line);
+    if (points.length === 0) { ctx.restore(); continue; }
+
+    ctx.moveTo(offsetX + points[0][0] * scale, offsetY + points[0][1] * scale);
+    for (let i = 1; i < points.length; i++) {
+      const prev = points[i - 1];
+      const curr = points[i];
+      const px = offsetX + prev[0] * scale;
+      const py = offsetY + prev[1] * scale;
+      const cx = offsetX + curr[0] * scale;
+      const cy = offsetY + curr[1] * scale;
+      const midX = (px + cx) / 2;
+      const midY = (py + cy) / 2;
+      ctx.quadraticCurveTo(midX, midY, cx, cy);
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    // Draw station points (smaller, seamless shadow, hover effect)
+    if (Array.isArray(metro.data.points)) {
+      for (const pt of metro.data.points) {
+        if (pt.cords && pt.cords.length === 2) {
+          const sx = offsetX + pt.cords[0] * scale;
+          const sy = offsetY + pt.cords[1] * scale;
+          let hovered = false;
+          if (window._metroHover && window._metroHover.metroId === metro.id && window._metroHover.stationId === pt.id) hovered = true;
+          // If hovered, make bigger, brighter, more modern (but keep glow size the same)
+          const baseRadius = 8;
+          const radius = hovered ? 8 : baseRadius;
+          ctx.save();
+          ctx.shadowColor = hovered ? metro.color : 'rgba(0,0,0,0.18)';
+          ctx.shadowBlur = hovered ? 24 : 8;
+          ctx.shadowOffsetX = 0;
+          ctx.shadowOffsetY = 0;
+          ctx.beginPath();
+          ctx.arc(sx, sy, radius, 0, Math.PI * 2);
+          ctx.fillStyle = '#fff';
+          ctx.globalAlpha = hovered ? 1 : 0.96;
+          ctx.fill();
+          ctx.lineWidth = hovered ? 5 : 2.5;
+          ctx.strokeStyle = hovered ? metro.color : blendColor(metro.color, '#bbb', 0.80);
+          ctx.shadowBlur = 0;
+          ctx.globalAlpha = 1;
+          ctx.stroke();
+          // Draw a colored glow if hovered (keep glow size fixed)
+          if (hovered) {
+            ctx.save();
+            ctx.globalAlpha = 0.25;
+            ctx.shadowColor = metro.color;
+            ctx.shadowBlur = 32;
+            ctx.beginPath();
+            ctx.arc(sx, sy, baseRadius + 6, 0, Math.PI * 2);
+            ctx.strokeStyle = metro.color;
+            ctx.lineWidth = 8;
+            ctx.stroke();
+            ctx.restore();
+          }
+          ctx.restore();
+          // Show tooltip with station name if hovered
+          if (hovered && pt.name) {
+            showMetroTooltip(pt.name, sx, sy, metro.color);
+          }
+        }
+      }
+    }
+
+    // If line is hovered, show tooltip with metro name at the closest point on the line (not at mouse position)
+    if (window._metroLineHover && window._metroLineHover.metroId === metro.id) {
+      // Find closest point on the line to the mouse
+      const mouseEvent = window._lastMouseEvent;
+      if (mouseEvent) {
+        const mouse = { x: mouseEvent.clientX, y: mouseEvent.clientY };
+        const points = metro.data.lines.map(line => line.cords || line);
+        let minDist = Infinity, best = null;
+        for (let i = 1; i < points.length; i++) {
+          const prev = points[i - 1];
+          const curr = points[i];
+          const x1 = offsetX + prev[0] * scale;
+          const y1 = offsetY + prev[1] * scale;
+          const x2 = offsetX + curr[0] * scale;
+          const y2 = offsetY + curr[1] * scale;
+          const dx = x2 - x1, dy = y2 - y1;
+          const lengthSq = dx*dx + dy*dy;
+          let t = ((mouse.x - x1) * dx + (mouse.y - y1) * dy) / (lengthSq || 1);
+          t = Math.max(0, Math.min(1, t));
+          const projX = x1 + t * dx;
+          const projY = y1 + t * dy;
+          const dist = Math.sqrt((mouse.x - projX) ** 2 + (mouse.y - projY) ** 2);
+          if (dist < minDist) {
+            minDist = dist;
+            best = { x: projX, y: projY };
+          }
+        }
+        if (best) {
+          // Smoothly animate the tooltip position (use requestAnimationFrame for true smoothness)
+          if (!window._metroLineTooltipPos) window._metroLineTooltipPos = { x: best.x, y: best.y };
+          // Use a higher lerp factor for even smoother motion
+          const lerp = (a, b, t) => a + (b - a) * t;
+          window._metroLineTooltipPos.x = lerp(window._metroLineTooltipPos.x, best.x, 0.18);
+          window._metroLineTooltipPos.y = lerp(window._metroLineTooltipPos.y, best.y, 0.18);
+          showMetroTooltip(metro.name, window._metroLineTooltipPos.x, window._metroLineTooltipPos.y, metro.color);
+        }
+      }
+    } else {
+      // Reset tooltip position when not hovering a line
+      window._metroLineTooltipPos = null;
+    }
+  }
+}
+
+// Add this helper at the top-level (outside renderMetros):
+function blendColor(color1, color2, t) {
+  // color1, color2: hex strings, t: 0..1
+  function hexToRgb(hex) {
+    hex = hex.replace('#', '');
+    if (hex.length === 3) hex = hex.split('').map(x => x + x).join('');
+    const num = parseInt(hex, 16);
+    return [num >> 16 & 255, num >> 8 & 255, num & 255];
+  }
+  function rgbToHex([r, g, b]) {
+    return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+  }
+  const rgb1 = hexToRgb(color1);
+  const rgb2 = hexToRgb(color2);
+  const rgb = [0, 1, 2].map(i => Math.round(rgb1[i] * t + rgb2[i] * (1 - t)));
+  return rgbToHex(rgb);
+}
+
+// --- Station hover detection ---
+canvas.addEventListener('mousemove', e => {
   let found = false;
-  // Points
-  if (overlayData && overlayData.points) {
-    for (const m of overlayData.points) {
-      // Metro/waypoint visibility check
-      let metros = [];
-      let waypoints = [];
-      if (typeof m.metro === 'string') metros.push(m.metro);
-      if (Array.isArray(m.metros)) metros = metros.concat(m.metros);
-      if (typeof m.waypoint === 'string') waypoints.push(m.waypoint);
-      if (Array.isArray(m.waypoints)) waypoints = waypoints.concat(m.waypoints);
-      let visible = true;
-      if (metros.length > 0) {
-        visible = false;
-        for (const tag of metros) if (metroVisibility[tag] !== false) visible = true;
-        if (!visible) continue;
-      }
-      if (waypoints.length > 0) {
-        visible = false;
-        for (const tag of waypoints) if (waypointVisibility[tag] !== false) visible = true;
-        if (!visible) continue;
-      }
-      if (metros.length === 0 && waypoints.length === 0 && (Object.keys(metroVisibility).length > 0 || Object.keys(waypointVisibility).length > 0)) continue;
-      const [x, y] = worldToScreen(m.x, m.z);
-      const dx = e.clientX - x;
-      const dy = e.clientY - y;
-      if (Math.sqrt(dx*dx + dy*dy) < 10) {
-        tooltip.innerText = m.name;
-        tooltip.style.left = e.clientX + 10 + "px";
-        tooltip.style.top = e.clientY + 10 + "px";
-        tooltip.style.display = "block";
+  let hover = null;
+  let lineHover = null;
+  // Check station points first
+  for (const metro of metros) {
+    if (!Array.isArray(metro.data.points)) continue;
+    for (const pt of metro.data.points) {
+      if (!pt.cords || pt.cords.length !== 2) continue;
+      const sx = offsetX + pt.cords[0] * scale;
+      const sy = offsetY + pt.cords[1] * scale;
+      const dx = e.clientX - sx;
+      const dy = e.clientY - sy;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 13) { // hover radius
+        hover = { metroId: metro.id, stationId: pt.id };
+        lineHover = { metroId: metro.id }; // <-- Also set line hover when station is hovered
         found = true;
         break;
       }
     }
+    if (found) break;
   }
-  // Lines
-  if (!found && overlayData && overlayData.lines) {
-    for (const line of overlayData.lines) {
-      // Metro/waypoint visibility check
-      let metros = [];
-      let waypoints = [];
-      if (typeof line.metro === 'string') metros.push(line.metro);
-      if (Array.isArray(line.metros)) metros = metros.concat(line.metros);
-      if (typeof line.waypoint === 'string') waypoints.push(line.waypoint);
-      if (Array.isArray(line.waypoints)) waypoints = waypoints.concat(line.waypoints);
-      let visible = true;
-      if (metros.length > 0) {
-        visible = false;
-        for (const tag of metros) if (metroVisibility[tag] !== false) visible = true;
-        if (!visible) continue;
-      }
-      if (waypoints.length > 0) {
-        visible = false;
-        for (const tag of waypoints) if (waypointVisibility[tag] !== false) visible = true;
-        if (!visible) continue;
-      }
-      if (metros.length === 0 && waypoints.length === 0 && (Object.keys(metroVisibility).length > 0 || Object.keys(waypointVisibility).length > 0)) continue;
-      const pts = line.points;
-      if (!pts || pts.length < 2) continue;
-      for (let i = 1; i < pts.length; i++) {
-        const [x1, y1] = worldToScreen(pts[i-1].x, pts[i-1].z);
-        const [x2, y2] = worldToScreen(pts[i].x, pts[i].z);
+  // Check lines (if not hovering a point)
+  if (!hover) {
+    for (const metro of metros) {
+      const points = metro.data.lines.map(line => line.cords || line);
+      if (points.length < 2) continue;
+      for (let i = 1; i < points.length; i++) {
+        const prev = points[i - 1];
+        const curr = points[i];
+        const x1 = offsetX + prev[0] * scale;
+        const y1 = offsetY + prev[1] * scale;
+        const x2 = offsetX + curr[0] * scale;
+        const y2 = offsetY + curr[1] * scale;
         // Distance from mouse to line segment
         const px = e.clientX, py = e.clientY;
         const dx = x2 - x1, dy = y2 - y1;
@@ -592,11 +837,8 @@ canvas.addEventListener("mousemove", (e) => {
         const projX = x1 + t * dx;
         const projY = y1 + t * dy;
         const dist = Math.sqrt((px - projX) ** 2 + (py - projY) ** 2);
-        if (dist < 8) {
-          tooltip.innerText = line.name || (tags[0] || 'Line');
-          tooltip.style.left = e.clientX + 10 + "px";
-          tooltip.style.top = e.clientY + 10 + "px";
-          tooltip.style.display = "block";
+        if (dist < 12) { // hover threshold for line
+          lineHover = { metroId: metro.id };
           found = true;
           break;
         }
@@ -604,123 +846,224 @@ canvas.addEventListener("mousemove", (e) => {
       if (found) break;
     }
   }
-  if (!found) tooltip.style.display = "none";
+  window._metroHover = hover;
+  window._metroLineHover = lineHover;
+  // Save the last mouse event for tooltip positioning
+  window._lastMouseEvent = e;
+  if (!hover) {
+    const tooltip = document.getElementById('metro-tooltip');
+    if (tooltip) tooltip.style.display = 'none';
+  }
 });
-canvas.addEventListener("click", (e) => {
-  if (overlayData && overlayData.points) {
-    for (const m of overlayData.points) {
-      const [x, y] = worldToScreen(m.x, m.z);
-      const dx = e.clientX - x;
-      const dy = e.clientY - y;
-      if (Math.sqrt(dx*dx + dy*dy) < 10) {
-        // Removed alert on point click
+
+function animate() {
+  const lerp = (a, b, t) => a + (b - a) * t;
+  // animation delay
+  scale = lerp(scale, targetScale, 0.65); // was 0.40, now faster
+  offsetX = lerp(offsetX, targetOffsetX, 0.65);
+  offsetY = lerp(offsetY, targetOffsetY, 0.65);
+  drawMap();
+  requestAnimationFrame(animate);
+}
+animate();
+
+// --- DESKTOP CONTROLS (PC) ---
+canvas.addEventListener("mousedown", e => {
+  isDragging = true;
+  lastX = e.clientX;
+  lastY = e.clientY;
+});
+canvas.addEventListener("mouseup", () => isDragging = false);
+canvas.addEventListener("mouseleave", () => isDragging = false);
+canvas.addEventListener("mousemove", e => {
+  if (isDragging) {
+    targetOffsetX += (e.clientX - lastX) * 1.5; // was 1, now 1.5x faster
+    targetOffsetY += (e.clientY - lastY) * 1.5;
+    lastX = e.clientX;
+    lastY = e.clientY;
+  }
+});
+canvas.addEventListener("wheel", e => {
+  e.preventDefault();
+  const zoomFactor = 1.25; // was 1.1, now faster
+  const zoom = e.deltaY < 0 ? zoomFactor : 1 / zoomFactor;
+  const mx = e.clientX, my = e.clientY;
+  const wx = (mx - offsetX) / scale;
+  const wy = (my - offsetY) / scale;
+  targetScale = Math.max(0.05, Math.min(10, targetScale * zoom));
+  targetOffsetX = mx - wx * targetScale;
+  targetOffsetY = my - wy * targetScale;
+}, { passive: false });
+
+// --- TOUCH CONTROLS (MOBILE) ---
+let lastTouches = [];
+canvas.addEventListener("touchstart", e => {
+  if (e.touches.length === 1) {
+    lastTouches = [e.touches[0]];
+  } else if (e.touches.length === 2) {
+    lastTouches = [e.touches[0], e.touches[1]];
+  }
+}, { passive: false });
+
+canvas.addEventListener("touchmove", e => {
+  e.preventDefault();
+  if (e.touches.length === 1 && lastTouches.length === 1) {
+    const touch = e.touches[0];
+    const last = lastTouches[0];
+    const dx = touch.clientX - last.clientX;
+    const dy = touch.clientY - last.clientY;
+    targetOffsetX += dx;
+    targetOffsetY += dy;
+    lastTouches = [touch];
+  } else if (e.touches.length === 2 && lastTouches.length === 2) {
+    const [t1, t2] = e.touches;
+    const [l1, l2] = lastTouches;
+
+    const midX = (t1.clientX + t2.clientX) / 2;
+    const midY = (t1.clientY + t2.clientY) / 2;
+    const lastMidX = (l1.clientX + l2.clientX) / 2;
+    const lastMidY = (l1.clientY + l2.clientY) / 2;
+
+    const dx = midX - lastMidX;
+    const dy = midY - lastMidY;
+    targetOffsetX += dx;
+    targetOffsetY += dy;
+
+    const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+    const lastDist = Math.hypot(l1.clientX - l2.clientX, l1.clientY - t2.clientY);
+
+    if (lastDist > 0 && dist > 0) {
+      const zoom = dist / lastDist;
+      const newTargetScale = Math.max(0.05, Math.min(10, targetScale * zoom));
+      const wx = (midX - targetOffsetX) / targetScale;
+      const wy = (midY - targetOffsetY) / targetScale;
+      targetScale = newTargetScale;
+      targetOffsetX = midX - wx * targetScale;
+      targetOffsetY = midY - wy * targetScale;
+    }
+
+    lastTouches = [t1, t2];
+  }
+});
+
+canvas.addEventListener("touchend", e => {
+  if (e.touches.length === 1) {
+    lastTouches = [e.touches[0]];
+  } else if (e.touches.length === 2) {
+    lastTouches = [e.touches[0], e.touches[1]];
+  } else {
+    lastTouches = [];
+  }
+}, { passive: false });
+
+// Update showMetroTooltip to accept color and use it for background
+function showMetroTooltip(text, x, y, color) {
+  let tooltip = document.getElementById('metro-tooltip');
+  if (!tooltip) {
+    tooltip = document.createElement('div');
+    tooltip.id = 'metro-tooltip';
+    tooltip.style.position = 'fixed';
+    tooltip.style.pointerEvents = 'none';
+    tooltip.style.color = '#fff';
+    tooltip.style.padding = '6px 14px';
+    tooltip.style.borderRadius = '8px';
+    tooltip.style.fontSize = '15px';
+    tooltip.style.fontFamily = 'sans-serif';
+    tooltip.style.zIndex = 1000;
+    tooltip.style.boxShadow = '0 2px 12px rgba(0,0,0,0.18)';
+    tooltip.style.userSelect = 'none';
+    tooltip.style.webkitUserSelect = 'none';
+    tooltip.style.MozUserSelect = 'none';
+    tooltip.style.msUserSelect = 'none';
+    document.body.appendChild(tooltip);
+  }
+  tooltip.textContent = text;
+  tooltip.style.display = 'block';
+  tooltip.style.left = (x + 18) + 'px';
+  tooltip.style.top = (y - 18) + 'px';
+  // Set background to a mix of metro color, black, and transparency
+  if (color) {
+    // Blend metro color with black, then use as rgba with 0.90 alpha for a darker look
+    function hexToRgb(hex) {
+      hex = hex.replace('#', '');
+      if (hex.length === 3) hex = hex.split('').map(x => x + x).join('');
+      const num = parseInt(hex, 16);
+      return [num >> 16 & 255, num >> 8 & 255, num & 255];
+    }
+    function blendRgb(rgb1, rgb2, t) {
+      return rgb1.map((c, i) => Math.round(c * (1 - t) + rgb2[i] * t));
+    }
+    const metroRgb = hexToRgb(color);
+    const blackRgb = [0, 0, 0];
+    const blended = blendRgb(metroRgb, blackRgb, 0.40); // 55% black for a much darker blend
+    tooltip.style.background = `rgba(${blended[0]},${blended[1]},${blended[2]},0.95)`;
+    tooltip.style.color = '#fff';
+  } else {
+    tooltip.style.background = 'rgba(20,20,20,0.97)';
+    tooltip.style.color = '#fff';
+  }
+}
+// Hide tooltip when not hovering any point
+canvas.addEventListener('mousemove', e => {
+  let found = false;
+  let hover = null;
+  let lineHover = null;
+  // Check station points first
+  for (const metro of metros) {
+    if (!Array.isArray(metro.data.points)) continue;
+    for (const pt of metro.data.points) {
+      if (!pt.cords || pt.cords.length !== 2) continue;
+      const sx = offsetX + pt.cords[0] * scale;
+      const sy = offsetY + pt.cords[1] * scale;
+      const dx = e.clientX - sx;
+      const dy = e.clientY - sy;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 13) { // hover radius
+        hover = { metroId: metro.id, stationId: pt.id };
+        found = true;
         break;
       }
     }
+    if (found) break;
+  }
+  // Check lines (if not hovering a point)
+  if (!hover) {
+    for (const metro of metros) {
+      const points = metro.data.lines.map(line => line.cords || line);
+      if (points.length < 2) continue;
+      for (let i = 1; i < points.length; i++) {
+        const prev = points[i - 1];
+        const curr = points[i];
+        const x1 = offsetX + prev[0] * scale;
+        const y1 = offsetY + prev[1] * scale;
+        const x2 = offsetX + curr[0] * scale;
+        const y2 = offsetY + curr[1] * scale;
+        // Distance from mouse to line segment
+        const px = e.clientX, py = e.clientY;
+        const dx = x2 - x1, dy = y2 - y1;
+        const lengthSq = dx*dx + dy*dy;
+        let t = ((px - x1) * dx + (py - y1) * dy) / (lengthSq || 1);
+        t = Math.max(0, Math.min(1, t));
+        const projX = x1 + t * dx;
+        const projY = y1 + t * dy;
+        const dist = Math.sqrt((px - projX) ** 2 + (py - projY) ** 2);
+        if (dist < 12) { // hover threshold for line
+          lineHover = { metroId: metro.id };
+          found = true;
+          break;
+        }
+      }
+      if (found) break;
+    }
+  }
+  window._metroHover = hover;
+  window._metroLineHover = lineHover;
+  if (!hover) {
+    const tooltip = document.getElementById('metro-tooltip');
+    if (tooltip) tooltip.style.display = 'none';
   }
 });
-canvas.addEventListener("wheel", (e) => {
-  e.preventDefault();
-  const zoomFactor = 1.1;
-  const prevScale = scale;
-  scale *= (e.deltaY < 0) ? zoomFactor : 1 / zoomFactor;
-  scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale));
 
-  const mouseX = e.clientX;
-  const mouseY = e.clientY;
-  const worldX = (mouseX - offsetX) / prevScale;
-  const worldY = (mouseY - offsetY) / prevScale;
-
-  offsetX = mouseX - worldX * scale;
-  offsetY = mouseY - worldY * scale;
-
-  drawMap();
-}, { passive: false });
-
-// Touch support
-let touchStartDist = null;
-let lastTouchMid = null;
-
-canvas.addEventListener("touchstart", (e) => {
-  if (e.touches.length === 1) {
-    isDragging = true;
-    lastX = e.touches[0].clientX;
-    lastY = e.touches[0].clientY;
-  } else if (e.touches.length === 2) {
-    isDragging = false;
-    touchStartDist = getTouchDist(e.touches);
-    lastTouchMid = getTouchMidpoint(e.touches);
-  }
-}, { passive: false });
-
-canvas.addEventListener("touchmove", (e) => {
-  e.preventDefault();
-
-  if (e.touches.length === 1 && isDragging) {
-    const touch = e.touches[0];
-    offsetX += touch.clientX - lastX;
-    offsetY += touch.clientY - lastY;
-    lastX = touch.clientX;
-    lastY = touch.clientY;
-    drawMap();
-  } else if (e.touches.length === 2) {
-    const newDist = getTouchDist(e.touches);
-    const zoom = newDist / touchStartDist;
-    const prevScale = scale;
-    scale *= zoom;
-    scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale));
-    touchStartDist = newDist;
-
-    const newMid = getTouchMidpoint(e.touches);
-    const worldX = (newMid.x - offsetX) / prevScale;
-    const worldY = (newMid.y - offsetY) / prevScale;
-    offsetX = newMid.x - worldX * scale;
-    offsetY = newMid.y - worldY * scale;
-
-    drawMap();
-  }
-}, { passive: false });
-
-canvas.addEventListener("touchend", () => {
-  isDragging = false;
-  touchStartDist = null;
-}, { passive: false });
-
-function getTouchDist(touches) {
-  const dx = touches[0].clientX - touches[1].clientX;
-  const dy = touches[0].clientY - touches[1].clientY;
-  return Math.sqrt(dx * dx + dy * dy);
-}
-
-function getTouchMidpoint(touches) {
-  return {
-    x: (touches[0].clientX + touches[1].clientX) / 2,
-    y: (touches[0].clientY + touches[1].clientY) / 2,
-  };
-}
-
-// Initial load
-loadOverlayData().then(() => drawMap());
-
-// --- Tag controls toggle logic ---
-const tagControls = document.getElementById('tag-controls');
-const tagControlsToggle = document.getElementById('tag-controls-toggle');
-tagControlsToggle.addEventListener('click', () => {
-  tagControls.classList.toggle('visible');
-  if (tagControls.classList.contains('visible')) {
-    tagControlsToggle.classList.add('hide');
-  } else {
-    tagControlsToggle.classList.remove('hide');
-  }
-});
-// Hide panel if click outside
-window.addEventListener('mousedown', (e) => {
-  if (!tagControls.contains(e.target) && e.target !== tagControlsToggle) {
-    tagControls.classList.remove('visible');
-    tagControlsToggle.classList.remove('hide');
-  }
-});
 </script>
-
 </body>
 </html>

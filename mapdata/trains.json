@@ -1,0 +1,14 @@
+{
+  "metros": [
+    {
+      "id": "train_a",
+      "name": "Train A",
+      "color": "#fff00f"
+    },
+    {
+      "id": "train_b",
+      "name": "Train B",
+      "color": "#00f0ff"
+    }
+  ]
+}
