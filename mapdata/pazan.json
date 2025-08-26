@@ -1,0 +1,2326 @@
+{
+  "points": [
+    {
+      "id": "nakladna_stanica_a4",
+      "name": "N\u00E1kladn\u00E1 stanica A4",
+      "cords": [
+        -363,
+        -119
+      ]
+    },
+    {
+      "id": "pustna_a1",
+      "name": "P\u00FA\u0161tna A1",
+      "cords": [
+        49,
+        -293
+      ]
+    },
+    {
+      "id": "dedina_a1",
+      "name": "Dedina A1",
+      "cords": [
+        303,
+        -175
+      ]
+    },
+    {
+      "id": "letisko_a2",
+      "name": "Letisko A2",
+      "cords": [
+        410,
+        -38
+      ]
+    },
+    {
+      "id": "hlavna_stanica_b2",
+      "name": "Hlavn\u00E1 stanica B2",
+      "cords": [
+        720,
+        13
+      ]
+    },
+    {
+      "id": "za_morom_b2",
+      "name": "Za morom B2",
+      "cords": [
+        362,
+        574
+      ]
+    },
+    {
+      "id": "mostna_a2",
+      "name": "Mostn\u00E1 A2",
+      "cords": [
+        -475,
+        1253
+      ]
+    },
+    {
+      "id": "za_morom_a1",
+      "name": "Za morom A1",
+      "cords": [
+        368,
+        538
+      ]
+    },
+    {
+      "id": "hlavna_stanica c1",
+      "name": "Hlavn\u00E1 stanica C1",
+      "cords": [
+        726,
+        -20
+      ]
+    },
+    {
+      "id": "letisko_b1",
+      "name": "Letisko B1",
+      "cords": [
+        365,
+        -50
+      ]
+    },
+    {
+      "id": "dedina_b2",
+      "name": "Dedina B2",
+      "cords": [
+        309,
+        -199
+      ]
+    },
+    {
+      "id": "pustna_b2",
+      "name": "P\u00FA\u0161tna B2",
+      "cords": [
+        14,
+        -299
+      ]
+    },
+    {
+      "id": "nakladna_stanica_a1",
+      "name": "N\u00E1kladn\u00E1 stanica A1",
+      "cords": [
+        -374,
+        -96
+      ]
+    },
+    {
+      "id": "turcianska_b2",
+      "name": "Tur\u010Dianska B2",
+      "cords": [
+        -1861,
+        -95
+      ]
+    },
+    {
+      "id": "turcianska_a1",
+      "name": "Tur\u010Dianska A1",
+      "cords": [
+        -1825,
+        -82
+      ]
+    }
+  ],
+  "lines": [
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -2030,
+        -89
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -1992,
+        -89
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -1988,
+        -90
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -1982,
+        -94
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -1979,
+        -95
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -1354,
+        -95
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -1349,
+        -94
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -1344,
+        -92
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -1341,
+        -89
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -1206,
+        45
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -1202,
+        48
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -1195,
+        51
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -1189,
+        52
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -388,
+        52
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -381,
+        50
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -376,
+        45
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -374,
+        38
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -374,
+        -126
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -373,
+        -129
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -211,
+        -291
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -206,
+        -295
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -200,
+        -298
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -193,
+        -299
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        104,
+        -299
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        109,
+        -300
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        113,
+        -303
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        125,
+        -315
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        129,
+        -318
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        135,
+        -320
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        246,
+        -320
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        252,
+        -318
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        256,
+        -315
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        290,
+        -281
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        292,
+        -278
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        293,
+        -274
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        293,
+        -229
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        294,
+        -223
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        298,
+        -218
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        305,
+        -211
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        308,
+        -207
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        309,
+        -202
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        309,
+        -79
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        311,
+        -71
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        315,
+        -66
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        327,
+        -54
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        331,
+        -51
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        336,
+        -50
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        398,
+        -50
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        407,
+        -44
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        710,
+        -44
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        718,
+        -42
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        722,
+        -39
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        725,
+        -34
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        726,
+        -28
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        726,
+        324
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        725,
+        330
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        723,
+        336
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        719,
+        342
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        701,
+        360
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        699,
+        362
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        695,
+        364
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        689,
+        365
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        631,
+        365
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        625,
+        366
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        618,
+        369
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        613,
+        373
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        582,
+        404
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        578,
+        407
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        573,
+        409
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        568,
+        411
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        563,
+        413
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        559,
+        416
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        510,
+        465
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        506,
+        468
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        502,
+        470
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        496,
+        471
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        376,
+        471
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        372,
+        472
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        369,
+        475
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        368,
+        479
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        368,
+        681
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        367,
+        687
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        365,
+        692
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        361,
+        698
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        314,
+        745
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        311,
+        748
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        309,
+        751
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        307,
+        757
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        306,
+        763
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        303,
+        769
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        300,
+        773
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        249,
+        824
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        242,
+        828
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        234,
+        830
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        37,
+        830
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        32,
+        831
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        28,
+        835
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        27,
+        840
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        27,
+        851
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        26,
+        857
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        22,
+        863
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        17,
+        866
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        11,
+        867
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -4,
+        867
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -13,
+        868
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -17,
+        870
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -21,
+        874
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -24,
+        879
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -25,
+        888
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -25,
+        983
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -26,
+        989
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -28,
+        992
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -31,
+        994
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -37,
+        995
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -156,
+        995
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -160,
+        996
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -163,
+        999
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -164,
+        1003
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -164,
+        1104
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -165,
+        1112
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -168,
+        1119
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -173,
+        1126
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -201,
+        1154
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -207,
+        1158
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -213,
+        1159
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -293,
+        1159
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -299,
+        1160
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -304,
+        1162
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -309,
+        1166
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -326,
+        1183
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -331,
+        1187
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -340,
+        1191
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -346,
+        1196
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -384,
+        1234
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -400,
+        1250
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -404,
+        1252
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -408,
+        1253
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -478,
+        1253
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -422,
+        1253
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -414,
+        1251
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -407,
+        1247
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -349,
+        1189
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -344,
+        1185
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -336,
+        1182
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -331,
+        1178
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -315,
+        1162
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -309,
+        1157
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -303,
+        1154
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -295,
+        1153
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -216,
+        1153
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -211,
+        1152
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -207,
+        1149
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -176,
+        1118
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -173,
+        1114
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -171,
+        1110
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -170,
+        1105
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -170,
+        999
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -169,
+        994
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -165,
+        990
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -160,
+        989
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -115,
+        989
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -106,
+        987
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -101,
+        984
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -98,
+        980
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -95,
+        974
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -94,
+        968
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -94,
+        871
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -92,
+        863
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -88,
+        858
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -81,
+        854
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -75,
+        853
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -33,
+        853
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -26,
+        851
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -21,
+        847
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -19,
+        844
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -18,
+        838
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -18,
+        835
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -17,
+        831
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -14,
+        826
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -9,
+        824
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        -3,
+        823
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        233,
+        824
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        238,
+        823
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        243,
+        820
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        294,
+        769
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        297,
+        765
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        299,
+        760
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        300,
+        755
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        301,
+        751
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        303,
+        747
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        307,
+        742
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        356,
+        693
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        360,
+        688
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        362,
+        681
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        362,
+        480
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        363,
+        472
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        369,
+        466
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        377,
+        465
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        496,
+        465
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        500,
+        464
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        503,
+        462
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        554,
+        411
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        560,
+        407
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        572,
+        403
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        578,
+        398
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        607,
+        369
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        613,
+        364
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        620,
+        361
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        631,
+        359
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        687,
+        359
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        691,
+        358
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        694,
+        356
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        714,
+        336
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        718,
+        330
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        719,
+        325
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        720,
+        -30
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        719,
+        -34
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        716,
+        -37
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        712,
+        -38
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        365,
+        -38
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        362,
+        -39
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        359,
+        -41
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        356,
+        -43
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        352,
+        -44
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        332,
+        -44
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        325,
+        -47
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        306,
+        -66
+      ]
+    },
+    {
+      "id": null,
+      "name": null,
+      "cords": [
+        304,
+        -69
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 225",
+      "cords": [
+        303,
+        -73
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 227",
+      "cords": [
+        303,
+        -194
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 227",
+      "cords": [
+        302,
+        -202
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 227",
+      "cords": [
+        298,
+        -208
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 229",
+      "cords": [
+        294,
+        -212
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 229",
+      "cords": [
+        290,
+        -217
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 229",
+      "cords": [
+        288,
+        -222
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 230",
+      "cords": [
+        287,
+        -228
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 234",
+      "cords": [
+        287,
+        -269
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 234",
+      "cords": [
+        286,
+        -273
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 235",
+      "cords": [
+        284,
+        -276
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 237",
+      "cords": [
+        261,
+        -299
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 237",
+      "cords": [
+        259,
+        -302
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 238",
+      "cords": [
+        251,
+        -311
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 238",
+      "cords": [
+        248,
+        -313
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 240",
+      "cords": [
+        244,
+        -314
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 242",
+      "cords": [
+        142,
+        -314
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 242",
+      "cords": [
+        136,
+        -313
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 243",
+      "cords": [
+        131,
+        -309
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 245",
+      "cords": [
+        118,
+        -296
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 245",
+      "cords": [
+        115,
+        -294
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 246",
+      "cords": [
+        110,
+        -293
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 248",
+      "cords": [
+        -191,
+        -293
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 248",
+      "cords": [
+        -199,
+        -291
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 249",
+      "cords": [
+        -204,
+        -287
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 251",
+      "cords": [
+        -360,
+        -131
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 251",
+      "cords": [
+        -362,
+        -128
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 252",
+      "cords": [
+        -363,
+        -124
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 254",
+      "cords": [
+        -363,
+        46
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 254",
+      "cords": [
+        -364,
+        52
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 254",
+      "cords": [
+        -368,
+        58
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 254",
+      "cords": [
+        -373,
+        62
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 255",
+      "cords": [
+        -380,
+        63
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 259",
+      "cords": [
+        -1184,
+        63
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 259",
+      "cords": [
+        -1194,
+        62
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 259",
+      "cords": [
+        -1200,
+        60
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 259",
+      "cords": [
+        -1207,
+        56
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 260",
+      "cords": [
+        -1213,
+        51
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 264",
+      "cords": [
+        -1342,
+        -77
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 264",
+      "cords": [
+        -1345,
+        -79
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 264",
+      "cords": [
+        -1349,
+        -81
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 265",
+      "cords": [
+        -1354,
+        -82
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 268",
+      "cords": [
+        -1951,
+        -82
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 268",
+      "cords": [
+        -1959,
+        -83
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 268",
+      "cords": [
+        -1971,
+        -88
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 269",
+      "cords": [
+        -1979,
+        -89
+      ]
+    },
+    {
+      "id": null,
+      "name": "Node 274",
+      "cords": [
+        -2030,
+        -89
+      ]
+    }
+  ]
+}
