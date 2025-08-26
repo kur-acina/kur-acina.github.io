@@ -278,6 +278,28 @@
       color: #e53935;
       background: rgba(229,57,53,0.08);
     }
+    /* Metro info sidebar styles */
+    #metro-info-sidebar {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      z-index: 2100;
+      background: rgba(30,30,30,0.98);
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+      font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+      min-width: 160px;
+      max-width: 320px;
+      color: #fff;
+      display: none;
+      transition: opacity 0.22s cubic-bezier(.4,1.6,.6,1),
+                  transform 0.32s cubic-bezier(.4,1.6,.6,1);
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.2);
+      transform-origin: top left;
+    }
   </style>
 </head>
 <body>
@@ -294,6 +316,8 @@
 </div>
 <!-- Menu toggle button -->
 <button id="metro-menu-toggle"><span>🚇</span></button>
+<!-- Metro info sidebar -->
+<div id="metro-info-sidebar"></div>
 <script>
 // --- DRAW MAP ---
 const tileSize = 512;
@@ -859,9 +883,12 @@ canvas.addEventListener('mousemove', e => {
 function animate() {
   const lerp = (a, b, t) => a + (b - a) * t;
   // animation delay
-  scale = lerp(scale, targetScale, 0.65); // was 0.40, now faster
-  offsetX = lerp(offsetX, targetOffsetX, 0.65);
-  offsetY = lerp(offsetY, targetOffsetY, 0.65);
+  // Reduce lerp factor for less CPU load on mobile
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  const lerpFactor = isMobile ? 0.35 : 0.65;
+  scale = lerp(scale, targetScale, lerpFactor);
+  offsetX = lerp(offsetX, targetOffsetX, lerpFactor);
+  offsetY = lerp(offsetY, targetOffsetY, lerpFactor);
   drawMap();
   requestAnimationFrame(animate);
 }
@@ -877,8 +904,8 @@ canvas.addEventListener("mouseup", () => isDragging = false);
 canvas.addEventListener("mouseleave", () => isDragging = false);
 canvas.addEventListener("mousemove", e => {
   if (isDragging) {
-    targetOffsetX += (e.clientX - lastX) * 1.5; // was 1, now 1.5x faster
-    targetOffsetY += (e.clientY - lastY) * 1.5;
+    targetOffsetX += (e.clientX - lastX); // was 1.5x faster, now normal speed
+    targetOffsetY += (e.clientY - lastY);
     lastX = e.clientX;
     lastY = e.clientY;
   }
@@ -897,6 +924,7 @@ canvas.addEventListener("wheel", e => {
 
 // --- TOUCH CONTROLS (MOBILE) ---
 let lastTouches = [];
+let lastTouchMove = 0;
 canvas.addEventListener("touchstart", e => {
   if (e.touches.length === 1) {
     lastTouches = [e.touches[0]];
@@ -907,6 +935,9 @@ canvas.addEventListener("touchstart", e => {
 
 canvas.addEventListener("touchmove", e => {
   e.preventDefault();
+  const now = Date.now();
+  if (now - lastTouchMove < 16) return; // Throttle to ~60fps
+  lastTouchMove = now;
   if (e.touches.length === 1 && lastTouches.length === 1) {
     const touch = e.touches[0];
     const last = lastTouches[0];
@@ -918,20 +949,16 @@ canvas.addEventListener("touchmove", e => {
   } else if (e.touches.length === 2 && lastTouches.length === 2) {
     const [t1, t2] = e.touches;
     const [l1, l2] = lastTouches;
-
     const midX = (t1.clientX + t2.clientX) / 2;
     const midY = (t1.clientY + t2.clientY) / 2;
     const lastMidX = (l1.clientX + l2.clientX) / 2;
     const lastMidY = (l1.clientY + l2.clientY) / 2;
-
     const dx = midX - lastMidX;
     const dy = midY - lastMidY;
     targetOffsetX += dx;
     targetOffsetY += dy;
-
     const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
-    const lastDist = Math.hypot(l1.clientX - l2.clientX, l1.clientY - t2.clientY);
-
+    const lastDist = Math.hypot(l1.clientX - l2.clientX, l1.clientY - l2.clientY);
     if (lastDist > 0 && dist > 0) {
       const zoom = dist / lastDist;
       const newTargetScale = Math.max(0.05, Math.min(10, targetScale * zoom));
@@ -941,7 +968,6 @@ canvas.addEventListener("touchmove", e => {
       targetOffsetX = midX - wx * targetScale;
       targetOffsetY = midY - wy * targetScale;
     }
-
     lastTouches = [t1, t2];
   }
 });
@@ -1064,6 +1090,93 @@ canvas.addEventListener('mousemove', e => {
   }
 });
 
+// --- Metro Info Sidebar Styles ---
+const sidebarStyle = `
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 2100;
+  background: rgba(30,30,30,0.98);
+  border-radius: 12px;
+  padding: 14px 18px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  min-width: 160px;
+  max-width: 320px;
+  color: #fff;
+  display: none;
+  transition: opacity 0.22s cubic-bezier(.4,1.6,.6,1),
+              transform 0.32s cubic-bezier(.4,1.6,.6,1);
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.2);
+  transform-origin: top left;
+`;
+const metroInfoSidebar = document.getElementById('metro-info-sidebar');
+metroInfoSidebar.setAttribute('style', sidebarStyle);
+
+function showMetroInfoSidebar(metro) {
+  metroInfoSidebar.innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+      <span style="font-size:18px;font-weight:600;">${metro.name}</span>
+      <button id="close-metro-info" style="margin-left:auto;color:#888;font-size:22px;border:none;background:none;cursor:pointer;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;transition:color 0.18s,background 0.18s;"><span>&#10006;</span></button>
+    </div>
+    <div style="height:4px;width:100%;background:${metro.color};border-radius:2px;margin-bottom:14px;"></div>
+    <div style="font-size:15.5px;opacity:0.92;">Type: ${metro.type === 'train' ? 'Train' : 'Metro'}</div>
+    <div style="margin-top:10px;font-size:14.5px;opacity:0.85;">ID: ${metro.id}</div>
+  `;
+  metroInfoSidebar.style.display = 'block';
+  setTimeout(() => {
+    metroInfoSidebar.style.opacity = '1';
+    metroInfoSidebar.style.pointerEvents = 'auto';
+    metroInfoSidebar.style.transform = 'scale(1)';
+  }, 10);
+  document.getElementById('close-metro-info').onclick = hideMetroInfoSidebar;
+}
+function hideMetroInfoSidebar() {
+  metroInfoSidebar.style.opacity = '0';
+  metroInfoSidebar.style.pointerEvents = 'none';
+  metroInfoSidebar.style.transform = 'scale(0.2)';
+  setTimeout(() => {
+    metroInfoSidebar.style.display = 'none';
+    metroInfoSidebar.innerHTML = '';
+  }, 320);
+}
+// --- Double-click event for metro line selection and sidebar ---
+canvas.addEventListener('dblclick', function(e) {
+  if (e.button !== 0) return;
+  let found = false;
+  let clickedMetro = null;
+  for (const metro of metros) {
+    const points = metro.data.lines.map(line => line.cords || line);
+    if (points.length < 2) continue;
+    for (let i = 1; i < points.length; i++) {
+      const prev = points[i - 1];
+      const curr = points[i];
+      const x1 = offsetX + prev[0] * scale;
+      const y1 = offsetY + prev[1] * scale;
+      const x2 = offsetX + curr[0] * scale;
+      const y2 = offsetY + curr[1] * scale;
+      const px = e.clientX, py = e.clientY;
+      const dx = x2 - x1, dy = y2 - y1;
+      const lengthSq = dx*dx + dy*dy;
+      let t = ((px - x1) * dx + (py - y1) * dy) / (lengthSq || 1);
+      t = Math.max(0, Math.min(1, t));
+      const projX = x1 + t * dx;
+      const projY = y1 + t * dy;
+      const dist = Math.sqrt((px - projX) ** 2 + (py - projY) ** 2);
+      if (dist < 12) {
+        clickedMetro = metro;
+        found = true;
+        break;
+      }
+    }
+    if (found) break;
+  }
+  if (clickedMetro) {
+    showMetroInfoSidebar(clickedMetro);
+  }
+});
 </script>
 </body>
 </html>
